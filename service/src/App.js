@@ -1,29 +1,14 @@
-/*
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-
-//import './App.css';
-
-import Chart from "./component/Layout/Chart/Chart";
-import Profile from "./component/Layout/Profile/Profile";
-
-function App() {
-  return (
-    <div className="App">
-      <Profile />
-      <Chart />
-    </div>
-  );
-}
-
-export default App;
-*/
 import React, { useState } from 'react';
 import './UserSearchApp.css'; // CSS 파일 추가
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/locale';
 import { subWeeks, subMonths } from 'date-fns';
+import Profile from './components/Profile';
+import SearchBar from './components/SearchBar';
+import SortOptions from './components/SortOptions';
+import UserList from './components/UserList';
+import DateRangePicker from './components/DateRangePicker';
+import UserInfo from './components/UserInfo';
+import GalleryPeriodFilter from './components/GalleryPeriodFilter';
+import Gallery from './components/Gallery';
 
 const App = () => {
   const users = [
@@ -38,11 +23,6 @@ const App = () => {
       gallery: [
         { url: 'image1.jpg', date: '2024-09-01' },
         { url: 'image2.jpg', date: '2024-10-01' },
-        { url: 'image1.jpg', date: '2024-04-26' },
-        { url: 'image1.jpg', date: '2024-08-02' },
-        { url: 'image1.jpg', date: '2024-06-03' },
-        { url: 'image1.jpg', date: '2024-07-27' },
-        { url: 'image1.jpg', date: '2024-03-27' },
       ],
     },
     {
@@ -56,13 +36,6 @@ const App = () => {
       gallery: [
         { url: 'image2.jpg', date: '2024-07-10' },
         { url: 'image1.jpg', date: '2024-03-27' },
-        { url: 'image2.jpg', date: '2024-06-07' },
-        { url: 'image2.jpg', date: '2024-07-10' },
-        { url: 'image2.jpg', date: '2024-07-13' },
-        { url: 'image2.jpg', date: '2024-04-08' },
-        { url: 'image2.jpg', date: '2024-04-20' },
-        { url: 'image2.jpg', date: '2024-08-17' },
-        { url: 'image2.jpg', date: '2024-06-03' },
       ],
     },
     {
@@ -141,133 +114,8 @@ const App = () => {
         <DateRangePicker selectedDates={selectedDates} handleDateChange={handleDateChange} />
         <UserInfo user={selectedUser} />
         <GalleryPeriodFilter setGalleryPeriod={setGalleryPeriod} />
-        <Gallery images={filteredImages} /> {/* 기간에 따른 필터링된 갤러리 */}
+        <Gallery images={filteredImages} />
       </div>
-    </div>
-  );
-};
-// 정렬 옵션 컴포넌트
-const SortOptions = ({ sortOption, setSortOption }) => {
-  return (
-    <div className="sort-options">
-      <label htmlFor="sort"> </label>
-      <select
-        id="sort"
-        value={sortOption}
-        onChange={(e) => setSortOption(e.target.value)}
-      >
-        <option value="name">이름 순</option>
-        <option value="id">ID 순</option>
-        <option value="birthdate">생년월일 순</option>
-      </select>
-    </div>
-  );
-};
-
-// 날짜 선택 컴포넌트
-const DateRangePicker = ({ selectedDates, handleDateChange }) => {
-  return (
-    <div className="date-range-picker">
-      <DatePicker
-        selectsRange
-        locale={ko} // 한글로 설정
-        dateFormat="yyyy년 MM월 dd일"
-        startDate={selectedDates[0]}
-        endDate={selectedDates[1]}
-        maxDate={new Date()} // 최대 선택 가능 날짜를 오늘로 설정
-        onChange={handleDateChange} // 날짜 변경 시 실행될 함수
-        isClearable // 날짜 선택 취소 기능
-      />
-    </div>
-  );
-};
-// 기간 필터 컴포넌트
-const GalleryPeriodFilter = ({ setGalleryPeriod }) => {
-  return (
-    <div className="gallery-period-filter">
-      <label>기간</label>
-      <select onChange={(e) => setGalleryPeriod(e.target.value)}>
-        <option value="all">전체</option>
-        <option value="1week">1주</option>
-        <option value="1month">1개월</option>
-        <option value="3months">3개월</option>
-        <option value="6months">6개월</option>
-      </select>
-    </div>
-  );
-};
-
-// 갤러리 컴포넌트
-const Gallery = ({ images }) => {
-  return (
-    <div className="gallery">
-      {images.length > 0 ? (
-        images.map((image, index) => (
-          <div key={index} className="gallery-item">
-            <img src={image.url} alt={`gallery-${index}`} />
-            <p>{image.date}</p> {/* 이미지의 날짜 표시 */}
-          </div>
-        ))
-      ) : (
-        <p>해당 기간에 이미지가 없습니다.</p>
-      )}
-    </div>
-  );
-};
-
-// 유저 정보 표시 컴포넌트
-const UserInfo = ({ user }) => {
-  return (
-    <div className="user-info">
-      <h1>환자정보</h1>
-      <p><strong>이름:</strong> {user.name}</p>
-      <p><strong>생년월일:</strong> {user.birthdate}</p>
-      <p><strong>키:</strong> {user.height}</p>
-      <p><strong>몸무게:</strong> {user.weight}</p>
-      <p><strong>병명:</strong> {user.disease}</p>
-      <p><strong>기타 사항:</strong> {user.other}</p>
-    </div>
-  );
-};
-
-const Profile = () => {
-  return (
-    <div className="profile">
-      <h2>프로필자리</h2>
-    </div>
-  );
-};
-
-const SearchBar = ({ searchTerm, setSearchTerm }) => {
-  return (
-    <div className="search-bar">
-      <input
-        type="text"
-        placeholder="유저 검색"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-    </div>
-  );
-};
-
-// 유저 리스트 컴포넌트
-const UserList = ({ users, setSelectedUser }) => {
-  return (
-    <div className="user-list">
-      {users.length > 0 ? (
-        users.map((user) => (
-          <div
-            key={user.id}
-            className="user-item"
-            onClick={() => setSelectedUser(user)} // 유저 클릭 시 선택
-          >
-            {user.name}
-          </div>
-        ))
-      ) : (
-        <p>해당하는 유저가 없습니다.</p>
-      )}
     </div>
   );
 };
