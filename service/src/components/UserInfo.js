@@ -9,7 +9,7 @@ const UserInfo = ({ user }) => {
       <p><strong>키:</strong> {user.height}</p>
       <p><strong>몸무게:</strong> {user.weight}</p>
       <p><strong>병명:</strong> {user.disease}</p>
-      <p><strong>기타 사항:</strong> {user.other}</p>
+      <p><strong>기타사항(접수처메모):</strong> {user.other}</p>
     </div>
   );
 };

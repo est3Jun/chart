@@ -5,10 +5,11 @@ import Profile from './components/Profile';
 import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
-import DateRangePicker from './components/DateRangePicker';
+
 import UserInfo from './components/UserInfo';
 import GalleryPeriodFilter from './components/GalleryPeriodFilter';
 import Gallery from './components/Gallery';
+import PatientRecord from './components/PatientRecord';
 
 const App = () => {
   const users = [
@@ -111,8 +112,10 @@ const App = () => {
         <UserList users={filteredUsers} setSelectedUser={setSelectedUser} />
       </div>
       <div className="right-panel">
-        <DateRangePicker selectedDates={selectedDates} handleDateChange={handleDateChange} />
-        <UserInfo user={selectedUser} />
+        <div className="user-details">
+          <UserInfo user={selectedUser} />
+          <PatientRecord userId={selectedUser.id} /> {/* userId 전달 */}
+        </div>
         <GalleryPeriodFilter setGalleryPeriod={setGalleryPeriod} />
         <Gallery images={filteredImages} />
       </div>

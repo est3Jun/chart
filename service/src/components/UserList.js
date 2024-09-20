@@ -10,7 +10,11 @@ const UserList = ({ users, setSelectedUser }) => {
             className="user-item"
             onClick={() => setSelectedUser(user)} // 유저 클릭 시 선택
           >
-            {user.name}
+            <div className="user-item-header">
+              <span className="user-name">{user.name}</span>
+              <span className="user-birthdate">({user.birthdate})</span>
+            </div>
+            <div className="user-item-other">{user.other}</div>
           </div>
         ))
       ) : (

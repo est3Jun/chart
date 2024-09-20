@@ -10,7 +10,7 @@ const SortOptions = ({ sortOption, setSortOption }) => {
         onChange={(e) => setSortOption(e.target.value)}
       >
         <option value="name">이름 순</option>
-        <option value="id">ID 순</option>
+        <option value="id">등록 순</option>
         <option value="birthdate">생년월일 순</option>
       </select>
     </div>
