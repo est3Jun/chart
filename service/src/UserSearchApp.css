@@ -1,7 +1,7 @@
 /* 전체 레이아웃을 그리드로 설정 */
 .user-search-app {
   display: grid;
-  grid-template-columns: 250px 1fr; /* 200px 고정 폭, 나머지 공간은 flexible */
+  grid-template-columns: 250px 1fr; /* 좌측 패널 250px, 나머지 공간 flexible */
   height: 100vh; /* 전체 높이 채우기 */
 }
 
@@ -11,7 +11,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  width: 250px; /* 좌측 패널 너비를 200px로 변경 */
+  width: 250px; /* 좌측 패널 너비 */
   height: 100%; /* 좌측 패널 전체 높이 */
 }
 
@@ -50,19 +50,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /*
-  white-space: nowrap; /* 줄바꿈 방지 
-  
-  overflow: hidden;  넘치는 텍스트 숨기기 
-  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시
-  */
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
   width: 100%;
 }
 
 .user-name {
   font-weight: bold;
   flex: 1; /* 이름의 가로 크기 조정 */
-   /* 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
 
 .user-birthdate {
@@ -82,45 +81,28 @@
 .right-panel {
   background-color: #fff;
   padding: 20px;
-}
-
-/* 날짜 선택 스타일 */
-/* 날짜 선택 컨테이너의 x축 길이를 두 배로 늘리기 */
-.date-range-picker {
   display: flex;
-  align-items: center;
-  width: 500px; /* 기본 크기를 두 배로 확장 */
+  flex-direction: column; /* 수직 정렬을 위해 flex-direction을 column으로 설정 */
 }
 
-.date-range-picker input {
-  width: 100%; /* 입력 필드가 컨테이너의 전체 너비를 사용 */
-  padding: 8px;
-  text-align: center;
+/* 유저 정보 및 진료 기록 영역 */
+.user-info-record-list {
+  display: flex; /* 유저 정보와 진료 기록 목록을 나란히 배치 */
+  justify-content: flex-start; /* 컴포넌트들이 왼쪽 정렬되도록 설정 */
+  gap: 20px; /* 컴포넌트 간의 간격 추가 */
 }
 
-/* DatePicker 래퍼의 너비를 조정 */
-.react-datepicker-wrapper {
-  width: 300px; /* x축 길이를 두 배로 늘림 */
-  position: relative; /* 버튼 위치 조정을 위한 상대 위치 */
-}
-
-.react-datepicker__input-container input {
-  width: 100%; /* 입력 필드가 전체 너비를 사용 */
-  padding: 8px;
-  text-align: center;
-}
-
-/* 버튼이 날짜를 가리지 않도록 조정 */
-.react-datepicker__close-icon {
-  position: absolute;
-  right: 50px; /* 오른쪽 끝에 배치 */
-  top: 50%;
-  transform: translateY(-0%); /* 수직으로 중앙에 배치 */
+/* 유저 정보 및 진료 기록 입력 폼 */
+.user-info-record {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 유저 정보와 진료 기록 입력 폼 간의 간격 */
+  width: 24.5%; /* 전체 폭의 35% 차지로 조정 */
 }
 
 /* 유저 정보 스타일 */
 .user-info {
-  width: 45%;
+  width: 100%;
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 5px;
@@ -132,14 +114,9 @@
   line-height: 1.5;
 }
 
-.user-details {
-  display: flex;
-  justify-content: space-between; /* user-info와 patient-record 컴포넌트를 나란히 배치 */
-  gap: 20px; /* 컴포넌트 간 간격 추가 */
-}
-
+/* 진료 기록 작성 폼 스타일 */
 .patient-record {
-  width: 45%; /* 진료 기록 영역 너비 설정 */
+  width: 100%;
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 5px;
@@ -188,11 +165,14 @@
   background-color: #0056b3;
 }
 
-/* 기록 목록 스타일 */
+/* 진료 기록 목록 스타일 */
 .record-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 21%; /* 진료 기록 목록의 너비를 절반으로 줄여서 30%로 설정 */
+  margin-left: 20px; /* user-info-record와 간격 조정 */
 }
 
 .record-item {
@@ -209,22 +189,31 @@
   margin-bottom: 5px;
 }
 
+.record-actions,
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .record-actions {
   position: absolute;
   top: 10px;
   right: 10px;
-  display: flex;
-  gap: 5px;
 }
 
-.record-actions button {
+.record-actions button,
+.edit-actions button {
   padding: 5px 10px;
-  background-color: #f44336;
-  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.record-actions button {
+  background-color: #f44336;
+  color: white;
 }
 
 .record-actions button:hover {
@@ -239,23 +228,79 @@
   background-color: #388e3c;
 }
 
-/* 갤러리 스타일 */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3열로 구성 */
-  gap: 10px;
-  margin-top: 20px;
-  max-height: 300px; /* 최대 높이 지정 */
-  overflow-y: auto; /* 스크롤 활성화 */
+/* 편집 폼 스타일 */
+.edit-form {
+  display: flex;
+  flex-direction: column;
 }
 
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+.edit-form input,
+.edit-form textarea {
+  margin-bottom: 10px;
 }
 
+.edit-actions button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-actions button:hover {
+  background-color: #388e3c;
+}
+
+.edit-actions button:nth-child(2) {
+  background-color: #f44336;
+}
+
+.edit-actions button:nth-child(2):hover {
+  background-color: #c62828;
+}
+
+/* 날짜 선택 스타일 */
+.date-range-picker {
+  display: flex;
+  align-items: center;
+  width: 500px; /* 기본 크기를 두 배로 확장 */
+}
+
+.date-range-picker input {
+  width: 100%; /* 입력 필드가 컨테이너의 전체 너비를 사용 */
+  padding: 8px;
+  text-align: center;
+}
+
+/* DatePicker 래퍼의 너비를 조정 */
+.react-datepicker-wrapper {
+  width: 300px; /* x축 길이를 두 배로 늘림 */
+  position: relative; /* 버튼 위치 조정을 위한 상대 위치 */
+}
+
+.react-datepicker__input-container input {
+  width: 100%; /* 입력 필드가 전체 너비를 사용 */
+  padding: 8px;
+  text-align: center;
+}
+
+/* 버튼이 날짜를 가리지 않도록 조정 */
+.react-datepicker__close-icon {
+  position: absolute;
+  right: 50px; /* 오른쪽 끝에 배치 */
+  top: 50%;
+  transform: translateY(-0%); /* 수직으로 중앙에 배치 */
+}
+
+/* 정렬 옵션 스타일 */
 .sort-options {
   margin-bottom: 20px;
+}
+
+/* 이미지 미리보기 스타일 */
+.image-preview {
+  max-width: 150px; /* 미리보기 이미지의 최대 너비 */
+  max-height: 150px; /* 미리보기 이미지의 최대 높이 */
+  width: auto; /* 이미지의 가로 비율 유지 */
+  height: auto; /* 이미지의 세로 비율 유지 */
+  margin-top: 10px; /* 미리보기 이미지의 위쪽 간격 */
+  border-radius: 5px; /* 이미지의 둥근 모서리 */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
 }

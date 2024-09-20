@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import './UserSearchApp.css'; // CSS 파일 추가
-import { subWeeks, subMonths } from 'date-fns';
 import Profile from './components/Profile';
 import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
-
+import DateRangePicker from './components/DateRangePicker';
 import UserInfo from './components/UserInfo';
-import GalleryPeriodFilter from './components/GalleryPeriodFilter';
-import Gallery from './components/Gallery';
 import PatientRecord from './components/PatientRecord';
+import RecordList from './components/RecordList';
 
 const App = () => {
   const users = [
@@ -21,10 +19,6 @@ const App = () => {
       disease: 'Diabetes',
       other: 'No comments',
       birthdate: '1990-02-15',
-      gallery: [
-        { url: 'image1.jpg', date: '2024-09-01' },
-        { url: 'image2.jpg', date: '2024-10-01' },
-      ],
     },
     {
       id: 2,
@@ -34,10 +28,6 @@ const App = () => {
       disease: 'Hypertension',
       other: 'Check regularly',
       birthdate: '1985-05-22',
-      gallery: [
-        { url: 'image2.jpg', date: '2024-07-10' },
-        { url: 'image1.jpg', date: '2024-03-27' },
-      ],
     },
     {
       id: 3,
@@ -47,10 +37,6 @@ const App = () => {
       disease: 'covid',
       other: 'cheer up',
       birthdate: '2000-07-30',
-      gallery: [
-        { url: 'image1.jpg', date: '2024-06-15' },
-        { url: 'image3.jpg', date: '2024-09-10' },
-      ],
     },
   ];
 
@@ -58,7 +44,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태 추가
-  const [galleryPeriod, setGalleryPeriod] = useState('all'); // 갤러리 기간 필터
+  const [records, setRecords] = useState({}); // 모든 유저의 진료 기록 저장
 
   // 정렬 함수
   const sortedUsers = [...users].sort((a, b) => {
@@ -82,26 +68,31 @@ const App = () => {
     setSelectedDates([start, end]);
   };
 
-  // 이미지 날짜에 따른 필터링 및 정렬
-  const filterImagesByDate = (images, period) => {
-    const now = new Date();
-    let filteredImages = images;
-
-    if (period === '1week') {
-      filteredImages = images.filter(image => new Date(image.date) >= subWeeks(now, 1));
-    } else if (period === '1month') {
-      filteredImages = images.filter(image => new Date(image.date) >= subMonths(now, 1));
-    } else if (period === '3months') {
-      filteredImages = images.filter(image => new Date(image.date) >= subMonths(now, 3));
-    } else if (period === '6months') {
-      filteredImages = images.filter(image => new Date(image.date) >= subMonths(now, 6));
-    }
-
-    return filteredImages.sort((a, b) => new Date(b.date) - new Date(a.date)); // 날짜별 내림차순 정렬
+  // 특정 유저의 기록 가져오기
+  const getUserRecords = () => {
+    return records[selectedUser.id] || [];
   };
 
-  // 필터링된 갤러리 이미지를 표시
-  const filteredImages = filterImagesByDate(selectedUser.gallery, galleryPeriod);
+  // 기록 추가 함수
+  const addRecord = (record) => {
+    const userRecords = getUserRecords();
+    const newRecords = { ...records, [selectedUser.id]: [...userRecords, record] };
+    setRecords(newRecords);
+  };
+
+  // 기록 삭제 함수
+  const deleteRecord = (index) => {
+    const userRecords = getUserRecords();
+    const updatedRecords = userRecords.filter((_, i) => i !== index);
+    setRecords({ ...records, [selectedUser.id]: updatedRecords });
+  };
+
+  // 기록 수정 함수
+  const updateRecord = (index, updatedRecord) => {
+    const userRecords = getUserRecords();
+    userRecords[index] = updatedRecord;
+    setRecords({ ...records, [selectedUser.id]: userRecords });
+  };
 
   return (
     <div className="user-search-app">
@@ -112,12 +103,18 @@ const App = () => {
         <UserList users={filteredUsers} setSelectedUser={setSelectedUser} />
       </div>
       <div className="right-panel">
-        <div className="user-details">
-          <UserInfo user={selectedUser} />
-          <PatientRecord userId={selectedUser.id} /> {/* userId 전달 */}
+        <div className="user-info-record-list">
+          <div className="user-info-record">
+            <UserInfo user={selectedUser} />
+            <PatientRecord addRecord={addRecord} /> {/* 진료 기록 입력 */}
+          </div>
+          <RecordList
+            records={getUserRecords()}
+            deleteRecord={deleteRecord}
+            updateRecord={updateRecord}
+          /> {/* 진료 기록 목록 */}
         </div>
-        <GalleryPeriodFilter setGalleryPeriod={setGalleryPeriod} />
-        <Gallery images={filteredImages} />
+        <DateRangePicker selectedDates={selectedDates} handleDateChange={handleDateChange} />
       </div>
     </div>
   );
