@@ -310,13 +310,54 @@
   margin-bottom: 20px;
 }
 
+/* 진료 기록 상세 정보 스타일 */
+.record-details {
+  background-color: #f9f9f9; /* 배경색 */
+  padding: 20px; /* 내부 여백 */
+  border-radius: 5px; /* 둥근 모서리 */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  width: 50%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
+  margin-left: 20px; /* 다른 컴포넌트와의 간격 */
+  max-height: 680px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+}
+
+/* 진료 기록 상세 정보 제목 */
+.record-details h3 {
+  font-size: 1.5em; /* 제목 크기 */
+  margin-bottom: 20px; /* 아래 여백 */
+  border-bottom: 2px solid #007bff; /* 하단에 구분선 */
+  padding-bottom: 10px; /* 구분선과 내용 사이의 간격 */
+}
+
+/* 진료 기록 상세 정보의 각 항목 */
+.record-details p {
+  margin: 10px 0; /* 각 항목 간의 여백 */
+  font-size: 1em; /* 글자 크기 */
+  line-height: 1.6; /* 줄 간격 */
+}
+
+/* 진료 기록 상세 정보의 강조된 텍스트 */
+.record-details strong {
+  font-weight: bold; /* 굵게 표시 */
+  color: #333; /* 텍스트 색상 */
+}
+
 /* 이미지 미리보기 스타일 */
 .image-preview {
-  max-width: 150px; /* 미리보기 이미지의 최대 너비 */
-  max-height: 150px; /* 미리보기 이미지의 최대 높이 */
-  width: auto; /* 이미지의 가로 비율 유지 */
-  height: auto; /* 이미지의 세로 비율 유지 */
-  margin-top: 10px; /* 미리보기 이미지의 위쪽 간격 */
-  border-radius: 5px; /* 이미지의 둥근 모서리 */
+  max-width: 100%; /* 이미지 너비가 컴포넌트를 넘지 않도록 */
+  height: auto; /* 이미지 비율 유지 */
+  margin-top: 10px; /* 이미지 위쪽 간격 */
+  border-radius: 5px; /* 둥근 모서리 */
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
+}
+
+/* 스크롤바 숨기기 */
+.record-details::-webkit-scrollbar {
+  display: none; /* 스크롤바 숨기기 (크롬, 사파리, 엣지) */
+}
+
+.record-details {
+  -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
+  scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
 }
