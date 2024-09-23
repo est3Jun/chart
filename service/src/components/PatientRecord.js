@@ -8,6 +8,7 @@ const PatientRecord = ({ addRecord, medicationTemplates, addTemplate }) => {
     medication: '' // 약물 필드
   });
   const [image, setImage] = useState(null); // 이미지 파일을 저장할 상태
+  const [isAppendMode, setIsAppendMode] = useState(false); // 약물 추가 모드 상태
 
   // 기록 추가 함수
   const handleSubmit = (e) => {
@@ -32,9 +33,19 @@ const PatientRecord = ({ addRecord, medicationTemplates, addTemplate }) => {
     }
   };
 
-  // 템플릿 선택 시 약물 정보 자동 입력
+  // 템플릿 선택 시 약물 정보 입력 (추가 모드 활성화 여부에 따라)
   const handleTemplateSelect = (template) => {
-    setForm({ ...form, medication: `${template.name} - ${template.dose}, ${template.frequency}` });
+    const medicationInfo = `${template.name} - ${template.dose}, ${template.frequency}`;
+    if (isAppendMode) {
+      setForm({ ...form, medication: form.medication + (form.medication ? '\n' : '') + medicationInfo });
+    } else {
+      setForm({ ...form, medication: medicationInfo });
+    }
+  };
+
+  // 추가 모드 활성화/비활성화 함수
+  const toggleAppendMode = () => {
+    setIsAppendMode(!isAppendMode);
   };
 
   return (
@@ -76,6 +87,11 @@ const PatientRecord = ({ addRecord, medicationTemplates, addTemplate }) => {
         </div>
         <button type="submit">추가</button>
       </form>
+      <div className="append-mode">
+        <button onClick={toggleAppendMode} className={isAppendMode ? 'active' : ''}>
+          {isAppendMode ? '추가 모드 활성화됨' : '추가 모드 활성화'}
+        </button>
+      </div>
       <MedicationTemplate
         templates={medicationTemplates}
         addTemplate={addTemplate}

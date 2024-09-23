@@ -4,7 +4,6 @@ import Profile from './components/Profile';
 import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
-//import DateRangePicker from './components/DateRangePicker';
 import UserInfo from './components/UserInfo';
 import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
@@ -43,11 +42,27 @@ const App = () => {
 
   const [selectedUser, setSelectedUser] = useState(users[0]); // 기본적으로 첫 유저 선택
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDates, setSelectedDates] = useState([null, null]);
   const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태 추가
   const [records, setRecords] = useState({}); // 모든 유저의 진료 기록 저장
   const [selectedRecord, setSelectedRecord] = useState(null); // 선택된 진료 기록
   const [medicationTemplates, setMedicationTemplates] = useState([]); // 약물 템플릿 상태
+
+  // 유저 정렬 함수
+  const sortedUsers = [...users].sort((a, b) => {
+    if (sortOption === 'name') {
+      return a.name.localeCompare(b.name);
+    } else if (sortOption === 'id') {
+      return a.id - b.id;
+    } else if (sortOption === 'birthdate') {
+      return new Date(a.birthdate) - new Date(b.birthdate);
+    }
+    return 0;
+  });
+
+  // 정렬된 유저를 검색어로 필터링
+  const filteredUsers = sortedUsers.filter((user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // 특정 유저의 기록 가져오기
   const getUserRecords = () => {
@@ -72,7 +87,7 @@ const App = () => {
         <Profile />
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-        <UserList users={users} setSelectedUser={setSelectedUser} />
+        <UserList users={filteredUsers} setSelectedUser={setSelectedUser} /> {/* 정렬된 유저 목록 전달 */}
       </div>
       <div className="right-panel">
         <div className="user-info-record-list">

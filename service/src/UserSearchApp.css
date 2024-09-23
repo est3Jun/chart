@@ -1,49 +1,50 @@
 /* 전체 레이아웃을 그리드로 설정 */
 .user-search-app {
   display: grid;
-  grid-template-columns: 250px 1fr; /* 좌측 패널 250px, 나머지 공간 flexible */
+  grid-template-columns: 300px 1fr; /* 좌측 패널 300px, 나머지 공간 flexible */
   height: 100vh; /* 전체 높이 채우기 */
 }
 
 /* 좌측 패널 레이아웃 */
 .left-panel {
   background-color: #f4f4f4;
-  padding: 20px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
-  width: 250px; /* 좌측 패널 너비 */
+  width: 300px; /* 좌측 패널 너비 */
   height: 100%; /* 좌측 패널 전체 높이 */
 }
 
 /* 프로필 영역 */
 .profile {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* 검색 바 스타일 */
 .search-bar input {
   width: 100%;
   padding: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   box-sizing: border-box;
 }
 
 /* 유저 리스트 스타일 */
 .user-list {
   padding: 10px;
+  overflow-y: auto; /* 유저 리스트 스크롤 가능 */
 }
 
 .user-item {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #f4f4f4;
+  background-color: #e6e6e6;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .user-item:hover {
-  background-color: #e0e0e0;
+  background-color: #d4d4d4;
 }
 
 .user-item-header {
@@ -73,7 +74,7 @@
 
 .user-item-other {
   margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #555;
 }
 
@@ -88,8 +89,9 @@
 /* 유저 정보 및 진료 기록 영역 */
 .user-info-record-list {
   display: flex; /* 유저 정보와 진료 기록 목록을 나란히 배치 */
-  justify-content: flex-start; /* 컴포넌트들이 왼쪽 정렬되도록 설정 */
-  gap: 20px; /* 컴포넌트 간의 간격 추가 */
+  justify-content: space-between; /* 전체 패널의 공간에 맞게 분배 */
+  gap: 15px; /* 컴포넌트 간의 간격 추가 */
+  height: calc(100vh - 50px); /* 전체 높이에서 상단 간격 제외 */
 }
 
 /* 유저 정보 및 진료 기록 입력 폼 */
@@ -97,7 +99,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px; /* 유저 정보와 진료 기록 입력 폼 간의 간격 */
-  width: 24.5%; /* 전체 폭의 35% 차지로 조정 */
+  width: 35%; /* 전체 폭의 35% 차지로 조정 */
 }
 
 /* 유저 정보 스타일 */
@@ -111,7 +113,7 @@
 
 .user-info p {
   margin: 10px 0;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* 진료 기록 작성 폼 스타일 */
@@ -124,7 +126,7 @@
 }
 
 .patient-record h2 {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .record-form {
@@ -133,7 +135,7 @@
 }
 
 .record-form div {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .record-form label {
@@ -145,14 +147,14 @@
 .record-form textarea {
   width: 100%;
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
 .record-form button {
-  padding: 10px 15px;
+  padding: 10px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -171,20 +173,17 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 21%; /* 기존 30%에서 70%로 줄인 21%로 설정 */
-  margin-left: 20px; /* user-info-record와 간격 조정 */
-  list-style-type: none; /* 불릿 제거 */
-  padding-left: 0; /* 기본 패딩 제거 */
-  max-height: 680px; /* 최대 높이 설정 */
+  width: 25%; /* 진료 기록 목록의 너비 설정 */
+  max-height: 100%; /* 전체 높이에 맞추기 */
   overflow-y: auto; /* 스크롤 활성화 */
   scrollbar-width: none; /* Firefox에서 스크롤 바 숨김 */
   -ms-overflow-style: none; /* IE에서 스크롤 바 숨김 */
 }
+
 /* 크롬, 사파리, 엣지 */
 .record-list::-webkit-scrollbar {
   display: none; /* 스크롤 바 숨김 */
 }
-
 
 .record-list li {
   list-style-type: none; /* li의 불릿 제거 */
@@ -276,7 +275,7 @@
 .date-range-picker {
   display: flex;
   align-items: center;
-  width: 500px; /* 기본 크기를 두 배로 확장 */
+  width: 400px; /* 기본 크기를 조정 */
 }
 
 .date-range-picker input {
@@ -287,7 +286,7 @@
 
 /* DatePicker 래퍼의 너비를 조정 */
 .react-datepicker-wrapper {
-  width: 300px; /* x축 길이를 두 배로 늘림 */
+  width: 250px; /* x축 길이를 조정 */
   position: relative; /* 버튼 위치 조정을 위한 상대 위치 */
 }
 
@@ -300,56 +299,55 @@
 /* 버튼이 날짜를 가리지 않도록 조정 */
 .react-datepicker__close-icon {
   position: absolute;
-  right: 50px; /* 오른쪽 끝에 배치 */
+  right: 30px; /* 오른쪽 끝에 배치 */
   top: 50%;
-  transform: translateY(-0%); /* 수직으로 중앙에 배치 */
+  transform: translateY(-50%); /* 수직으로 중앙에 배치 */
 }
 
 /* 정렬 옵션 스타일 */
 .sort-options {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 /* 진료 기록 상세 정보 스타일 */
 .record-details {
-  background-color: #f9f9f9; /* 배경색 */
-  padding: 20px; /* 내부 여백 */
-  border-radius: 5px; /* 둥근 모서리 */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-  width: 50%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
-  margin-left: 20px; /* 다른 컴포넌트와의 간격 */
-  max-height: 680px; /* 최대 높이 설정 */
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 35%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
+  max-height: 100%; /* 전체 높이에 맞추기 */
   overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
 }
 
 /* 진료 기록 상세 정보 제목 */
 .record-details h3 {
-  font-size: 1.5em; /* 제목 크기 */
-  margin-bottom: 20px; /* 아래 여백 */
-  border-bottom: 2px solid #007bff; /* 하단에 구분선 */
-  padding-bottom: 10px; /* 구분선과 내용 사이의 간격 */
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
 }
 
 /* 진료 기록 상세 정보의 각 항목 */
 .record-details p {
-  margin: 10px 0; /* 각 항목 간의 여백 */
-  font-size: 1em; /* 글자 크기 */
-  line-height: 1.6; /* 줄 간격 */
+  margin: 10px 0;
+  font-size: 1em;
+  line-height: 1.6;
 }
 
 /* 진료 기록 상세 정보의 강조된 텍스트 */
 .record-details strong {
-  font-weight: bold; /* 굵게 표시 */
-  color: #333; /* 텍스트 색상 */
+  font-weight: bold;
+  color: #333;
 }
 
 /* 이미지 미리보기 스타일 */
 .image-preview {
-  max-width: 100%; /* 이미지 너비가 컴포넌트를 넘지 않도록 */
-  height: auto; /* 이미지 비율 유지 */
-  margin-top: 10px; /* 이미지 위쪽 간격 */
-  border-radius: 5px; /* 둥근 모서리 */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 /* 스크롤바 숨기기 */
@@ -360,4 +358,129 @@
 .record-details {
   -ms-overflow-style: none; /* IE 및 Edge에서 스크롤바 숨기기 */
   scrollbar-width: none; /* 파이어폭스에서 스크롤바 숨기기 */
+}
+
+/* 추가 모드 버튼 스타일 */
+.append-mode {
+  margin-top: 20px;
+}
+
+.append-mode button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.append-mode button:hover {
+  background-color: #0056b3;
+}
+
+.append-mode button.active {
+  background-color: #28a745; /* 활성화 상태의 버튼 색상 */
+}
+
+.append-mode button.active:hover {
+  background-color: #218838; /* 활성화 상태의 버튼 호버 색상 */
+}
+
+/* 약물 템플릿 컨테이너 스타일 */
+.medication-template {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  max-height: 400px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  scrollbar-width: thin; /* 파이어폭스에서 스크롤바 두께 얇게 */
+  scrollbar-color: #ccc #f0f0f0; /* 스크롤바 색상 설정 */
+}
+
+/* 스크롤바 스타일 */
+.medication-template::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+}
+
+.medication-template::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* 스크롤바 색상 */
+  border-radius: 5px;
+}
+
+.medication-template::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* 스크롤바 배경 */
+}
+
+/* 약물 템플릿 목록 스타일 */
+.template-item {
+  display: flex;
+  justify-content: space-between; /* 텍스트와 버튼 간격 확보 */
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.template-item button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.template-item button:hover {
+  background-color: #0056b3;
+}
+
+.template-item:hover {
+  background-color: #e6e6e6;
+}
+
+/* 약물 템플릿 추가 폼 스타일 */
+.add-template {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 입력 필드 간격 */
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.add-template input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.add-template button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-template button:hover {
+  background-color: #218838;
+}
+
+/* 약물 템플릿 목록 제목 스타일 */
+.medication-template h4 {
+  font-size: 1.4em;
+  margin-bottom: 15px;
+  color: #333;
 }
