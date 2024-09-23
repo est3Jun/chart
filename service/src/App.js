@@ -10,7 +10,6 @@ import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
 import RecordDetails from './components/RecordDetails';
 
-
 const App = () => {
   const users = [
     {
@@ -18,6 +17,7 @@ const App = () => {
       name: 'Alice 강',
       height: '165cm',
       weight: '60kg',
+      disease: 'Diabetes',
       other: 'No comments',
       birthdate: '1990-02-15',
     },
@@ -26,6 +26,7 @@ const App = () => {
       name: 'Bob Smith',
       height: '180cm',
       weight: '75kg',
+      disease: 'Hypertension',
       other: 'Check regularly',
       birthdate: '1985-05-22',
     },
@@ -34,6 +35,7 @@ const App = () => {
       name: '길동 강',
       height: '170cm',
       weight: '65kg',
+      disease: 'covid',
       other: 'cheer up',
       birthdate: '2000-07-30',
     },
@@ -45,33 +47,16 @@ const App = () => {
   const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태 추가
   const [records, setRecords] = useState({}); // 모든 유저의 진료 기록 저장
   const [selectedRecord, setSelectedRecord] = useState(null); // 선택된 진료 기록
-
-
-  // 정렬 함수
-  const sortedUsers = [...users].sort((a, b) => {
-    if (sortOption === 'name') {
-      return a.name.localeCompare(b.name);
-    } else if (sortOption === 'id') {
-      return a.id - b.id;
-    } else if (sortOption === 'birthdate') {
-      return new Date(a.birthdate) - new Date(b.birthdate);
-    }
-    return 0;
-  });
-
-  // 정렬된 유저를 필터링
-  const filteredUsers = sortedUsers.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setSelectedDates([start, end]);
-  };
+  const [medicationTemplates, setMedicationTemplates] = useState([]); // 약물 템플릿 상태
 
   // 특정 유저의 기록 가져오기
   const getUserRecords = () => {
     return records[selectedUser.id] || [];
+  };
+
+  // 약물 템플릿 추가 함수
+  const addTemplate = (template) => {
+    setMedicationTemplates([...medicationTemplates, template]);
   };
 
   // 기록 추가 함수
@@ -81,39 +66,27 @@ const App = () => {
     setRecords(newRecords);
   };
 
-  // 기록 삭제 함수
-  const deleteRecord = (index) => {
-    const userRecords = getUserRecords();
-    const updatedRecords = userRecords.filter((_, i) => i !== index);
-    setRecords({ ...records, [selectedUser.id]: updatedRecords });
-  };
-
-  // 기록 수정 함수
-  const updateRecord = (index, updatedRecord) => {
-    const userRecords = getUserRecords();
-    userRecords[index] = updatedRecord;
-    setRecords({ ...records, [selectedUser.id]: userRecords });
-  };
-
   return (
     <div className="user-search-app">
       <div className="left-panel">
         <Profile />
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <SortOptions sortOption={sortOption} setSortOption={setSortOption} />
-        <UserList users={filteredUsers} setSelectedUser={setSelectedUser} />
+        <UserList users={users} setSelectedUser={setSelectedUser} />
       </div>
       <div className="right-panel">
         <div className="user-info-record-list">
           <div className="user-info-record">
             <UserInfo user={selectedUser} />
-            <PatientRecord addRecord={addRecord} /> {/* 진료 기록 입력 */}
+            <PatientRecord
+              addRecord={addRecord}
+              medicationTemplates={medicationTemplates}
+              addTemplate={addTemplate}
+            /> {/* 진료 기록 입력 */}
           </div>
           <RecordList
             records={getUserRecords()}
-            deleteRecord={deleteRecord}
-            updateRecord={updateRecord}
-            setSelectedRecord={setSelectedRecord} // 진료 기록 선택
+            setSelectedRecord={setSelectedRecord}
           /> {/* 진료 기록 목록 */}
           <RecordDetails record={selectedRecord} /> {/* 진료 기록 상세 보기 */}
         </div>
