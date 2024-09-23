@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const RecordList = ({ records, deleteRecord, updateRecord }) => {
+const RecordList = ({ records, deleteRecord, updateRecord, setSelectedRecord }) => {
   const [editIndex, setEditIndex] = useState(null);
   const [editForm, setEditForm] = useState({ date: '', diagnosis: '', notes: '', image: '' });
 
@@ -27,13 +27,22 @@ const RecordList = ({ records, deleteRecord, updateRecord }) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
+  // 기록 항목 클릭 시, 해당 기록을 상세 보기 컴포넌트에 표시
+  const handleRecordClick = (record) => {
+    setSelectedRecord(record); // 선택된 기록을 상위 컴포넌트로 전달
+  };
+
   return (
     <div className="record-list">
       <h3>진료 기록 목록</h3>
       <ul>
         {records.length > 0 ? (
           records.map((record, index) => (
-            <li key={index} className="record-item">
+            <li
+              key={index}
+              className="record-item"
+              onClick={() => handleRecordClick(record)} // 각 기록을 클릭하면 해당 기록이 상세 보기에 표시됨
+            >
               {editIndex === index ? (
                 <div className="edit-form">
                   <input
@@ -58,6 +67,10 @@ const RecordList = ({ records, deleteRecord, updateRecord }) => {
                   <strong>진단명:</strong> {record.diagnosis} <br />
                   <strong>비고:</strong> {record.notes} <br />
                   {record.image && <img src={record.image} alt="첨부 이미지" className="image-preview" />}
+                  <div className="record-actions">
+                    <button onClick={() => handleEdit(index)}>수정</button>
+                    <button onClick={() => deleteRecord(index)}>삭제</button>
+                  </div>
                 </>
               )}
             </li>

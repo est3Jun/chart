@@ -8,6 +8,8 @@ import UserList from './components/UserList';
 import UserInfo from './components/UserInfo';
 import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
+import RecordDetails from './components/RecordDetails';
+
 
 const App = () => {
   const users = [
@@ -16,7 +18,6 @@ const App = () => {
       name: 'Alice 강',
       height: '165cm',
       weight: '60kg',
-      disease: 'Diabetes',
       other: 'No comments',
       birthdate: '1990-02-15',
     },
@@ -25,7 +26,6 @@ const App = () => {
       name: 'Bob Smith',
       height: '180cm',
       weight: '75kg',
-      disease: 'Hypertension',
       other: 'Check regularly',
       birthdate: '1985-05-22',
     },
@@ -34,7 +34,6 @@ const App = () => {
       name: '길동 강',
       height: '170cm',
       weight: '65kg',
-      disease: 'covid',
       other: 'cheer up',
       birthdate: '2000-07-30',
     },
@@ -45,6 +44,8 @@ const App = () => {
   const [selectedDates, setSelectedDates] = useState([null, null]);
   const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태 추가
   const [records, setRecords] = useState({}); // 모든 유저의 진료 기록 저장
+  const [selectedRecord, setSelectedRecord] = useState(null); // 선택된 진료 기록
+
 
   // 정렬 함수
   const sortedUsers = [...users].sort((a, b) => {
@@ -112,7 +113,9 @@ const App = () => {
             records={getUserRecords()}
             deleteRecord={deleteRecord}
             updateRecord={updateRecord}
+            setSelectedRecord={setSelectedRecord} // 진료 기록 선택
           /> {/* 진료 기록 목록 */}
+          <RecordDetails record={selectedRecord} /> {/* 진료 기록 상세 보기 */}
         </div>
       </div>
     </div>

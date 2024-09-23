@@ -8,7 +8,6 @@ const UserInfo = ({ user }) => {
       <p><strong>생년월일:</strong> {user.birthdate}</p>
       <p><strong>키:</strong> {user.height}</p>
       <p><strong>몸무게:</strong> {user.weight}</p>
-      <p><strong>병명:</strong> {user.disease}</p>
       <p><strong>기타사항(접수처메모):</strong> {user.other}</p>
     </div>
   );
