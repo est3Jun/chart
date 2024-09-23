@@ -58,10 +58,6 @@ const RecordList = ({ records, deleteRecord, updateRecord }) => {
                   <strong>진단명:</strong> {record.diagnosis} <br />
                   <strong>비고:</strong> {record.notes} <br />
                   {record.image && <img src={record.image} alt="첨부 이미지" className="image-preview" />}
-                  <div className="record-actions">
-                    <button onClick={() => handleEdit(index)}>수정</button>
-                    <button onClick={() => deleteRecord(index)}>삭제</button>
-                  </div>
                 </>
               )}
             </li>

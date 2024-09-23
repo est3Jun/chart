@@ -4,7 +4,7 @@ import Profile from './components/Profile';
 import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
-import DateRangePicker from './components/DateRangePicker';
+//import DateRangePicker from './components/DateRangePicker';
 import UserInfo from './components/UserInfo';
 import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
@@ -114,7 +114,6 @@ const App = () => {
             updateRecord={updateRecord}
           /> {/* 진료 기록 목록 */}
         </div>
-        <DateRangePicker selectedDates={selectedDates} handleDateChange={handleDateChange} />
       </div>
     </div>
   );

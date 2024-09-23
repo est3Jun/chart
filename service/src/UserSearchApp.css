@@ -171,10 +171,26 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 21%; /* 진료 기록 목록의 너비를 절반으로 줄여서 30%로 설정 */
+  width: 21%; /* 기존 30%에서 70%로 줄인 21%로 설정 */
   margin-left: 20px; /* user-info-record와 간격 조정 */
+  list-style-type: none; /* 불릿 제거 */
+  padding-left: 0; /* 기본 패딩 제거 */
+  max-height: 730px; /* 최대 높이 설정 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  scrollbar-width: none; /* Firefox에서 스크롤 바 숨김 */
+  -ms-overflow-style: none; /* IE에서 스크롤 바 숨김 */
+}
+/* 크롬, 사파리, 엣지 */
+.record-list::-webkit-scrollbar {
+  display: none; /* 스크롤 바 숨김 */
 }
 
+
+.record-list li {
+  list-style-type: none; /* li의 불릿 제거 */
+}
+
+/* 진료 기록 아이템 스타일 */
 .record-item {
   background-color: #ffffff;
   border: 1px solid #ccc;
