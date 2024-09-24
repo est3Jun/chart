@@ -1,51 +1,40 @@
-import React, { useState } from 'react';
-import './UserSearchApp.css'; // CSS 파일 추가
+// App.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // axios 추가
+import './UserSearchApp.css';
 import Profile from './components/Profile';
 import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
 import UserInfo from './components/UserInfo';
-//import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
 import RecordDetails from './components/RecordDetails';
 
 const App = () => {
-  const users = [
-    {
-      id: 1,
-      name: 'Alice 강',
-      height: '165cm',
-      weight: '60kg',
-      disease: 'Diabetes',
-      other: 'No comments',
-      birthdate: '1990-02-15',
-    },
-    {
-      id: 2,
-      name: 'Bob Smith',
-      height: '180cm',
-      weight: '75kg',
-      disease: 'Hypertension',
-      other: 'Check regularly',
-      birthdate: '1985-05-22',
-    },
-    {
-      id: 3,
-      name: '길동 강',
-      height: '170cm',
-      weight: '65kg',
-      disease: 'covid',
-      other: 'cheer up',
-      birthdate: '2000-07-30',
-    },
-  ];
-
-  const [selectedUser, setSelectedUser] = useState(users[0]); // 기본적으로 첫 유저 선택
+  const [users, setUsers] = useState([]); // 유저 데이터 상태
+  const [selectedUser, setSelectedUser] = useState(null); // 선택된 유저
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태 추가
+  const [sortOption, setSortOption] = useState('name'); // 정렬 기준 상태
   const [records, setRecords] = useState({}); // 모든 유저의 진료 기록 저장
   const [selectedRecord, setSelectedRecord] = useState(null); // 선택된 진료 기록
   const [medicationTemplates, setMedicationTemplates] = useState([]); // 약물 템플릿 상태
+
+  // useEffect를 사용하여 유저 데이터 가져오기
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://172.30.1.125:8001/patients');
+        setUsers(response.data); // 가져온 데이터를 users 상태에 저장
+        if (response.data.length > 0) {
+          setSelectedUser(response.data[0]); // 첫 번째 유저를 기본 선택
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
 
   // 유저 정렬 함수
   const sortedUsers = [...users].sort((a, b) => {
@@ -66,7 +55,7 @@ const App = () => {
 
   // 특정 유저의 기록 가져오기
   const getUserRecords = () => {
-    return records[selectedUser.id] || [];
+    return records[selectedUser?.id] || [];
   };
 
   // 약물 템플릿 추가 함수
@@ -92,7 +81,7 @@ const App = () => {
       <div className="right-panel">
         <div className="user-info-record-list">
           <div className="user-info-record">
-            <UserInfo user={selectedUser} />
+            {selectedUser && <UserInfo user={selectedUser} />} {/* 선택된 유저 정보 표시 */}
             {/*
             <PatientRecord
               addRecord={addRecord}

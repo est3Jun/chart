@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 const MedicationList = ({ medications, addMedication, updateMedication, deleteMedication }) => {
   const [newMedication, setNewMedication] = useState({ name: '', dose: '', frequency: '' });
   const [editIndex, setEditIndex] = useState(null);
