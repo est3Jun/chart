@@ -5,7 +5,7 @@ import SearchBar from './components/SearchBar';
 import SortOptions from './components/SortOptions';
 import UserList from './components/UserList';
 import UserInfo from './components/UserInfo';
-import PatientRecord from './components/PatientRecord';
+//import PatientRecord from './components/PatientRecord';
 import RecordList from './components/RecordList';
 import RecordDetails from './components/RecordDetails';
 
@@ -93,11 +93,14 @@ const App = () => {
         <div className="user-info-record-list">
           <div className="user-info-record">
             <UserInfo user={selectedUser} />
+            {/*
             <PatientRecord
               addRecord={addRecord}
               medicationTemplates={medicationTemplates}
               addTemplate={addTemplate}
-            /> {/* 진료 기록 입력 */}
+            />
+            진료 기록 입력 컴포넌트 
+            */}
           </div>
           <RecordList
             records={getUserRecords()}

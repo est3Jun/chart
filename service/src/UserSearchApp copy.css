@@ -1,0 +1,291 @@
+/* 전체 레이아웃을 그리드로 설정 */
+.user-search-app {
+  display: grid;
+  grid-template-columns: 200px 1fr; /* 좌측 패널 200px, 나머지 공간 flexible */
+  height: 100vh; /* 전체 높이 채우기 */
+  font-size: 1em; /* 기본 폰트 크기 설정 */
+  background-color: #f8f9fa;
+}
+
+/* 좌측 패널 레이아웃 */
+.left-panel {
+  background-color: #f4f4f4;
+  padding: 15px; /* 패딩 조정 */
+  display: flex;
+  flex-direction: column;
+  width: 200px; /* 좌측 패널 너비 */
+  height: 100%; /* 좌측 패널 전체 높이 */
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
+  border-right: 1px solid #e0e0e0; /* 패널 경계선 */
+  box-sizing: border-box;
+  overflow-y: auto; /* 스크롤 활성화 */
+}
+
+/* 프로필 영역 */
+.profile {
+  margin-bottom: 20px; /* 여백 조정 */
+  text-align: center;
+}
+
+.profile h2 {
+  color: #333;
+  font-size: 1.2em; /* 폰트 크기 조정 */
+  margin-bottom: 10px;
+}
+
+.profile img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 검색 바 스타일 */
+.search-bar input {
+  width: 100%;
+  padding: 8px; /* 패딩 조정 */
+  margin-bottom: 15px; /* 여백 조정 */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 유저 리스트 스타일 */
+.user-list {
+  padding: 10px; /* 패딩 조정 */
+  overflow-y: auto; /* 유저 리스트 스크롤 가능 */
+}
+
+.user-item {
+  padding: 10px; /* 패딩 조정 */
+  margin-bottom: 10px; /* 여백 조정 */
+  background-color: #e6e6e6;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-item:hover {
+  background-color: #d4d4d4;
+}
+
+.user-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+  width: 100%;
+}
+
+.user-name {
+  font-weight: bold;
+  flex: 1; /* 이름의 가로 크기 조정 */
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.user-birthdate {
+  color: #777;
+  margin-left: 5px; /* 이름과 생년월일 간의 간격 */
+  flex-shrink: 0; /* 생년월일이 줄어들지 않도록 고정 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.user-item-other {
+  margin-top: 5px; /* 여백 조정 */
+  font-size: 0.85em; /* 폰트 크기 조정 */
+  color: #555;
+}
+
+/* 우측 패널 */
+.right-panel {
+  background-color: #fff;
+  padding: 20px; /* 패딩 조정 */
+  display: flex;
+  flex-direction: column; /* 수직 정렬을 위해 flex-direction을 column으로 설정 */
+  height: 100%; /* 전체 높이 고정 */
+  box-sizing: border-box; /* 전체 높이 및 너비 계산에 padding 및 border 포함 */
+  overflow-y: auto; /* 스크롤 활성화 */
+}
+
+/* 유저 정보 및 진료 기록 영역 */
+.user-info-record-list {
+  display: flex; /* 수평 정렬을 위한 flex 레이아웃 */
+  justify-content: space-between; /* 컴포넌트 간 간격 유지 */
+  align-items: stretch; /* 모든 컴포넌트의 높이를 동일하게 유지 */
+  gap: 20px; /* 컴포넌트 간 간격 추가 */
+  height: calc(100% - 40px); /* 전체 높이에서 상단 패딩을 제외한 높이 */
+}
+
+/* 유저 정보 및 진료 기록 입력 폼 */
+.user-info-record {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  gap: 20px; /* 유저 정보와 진료 기록 입력 폼 간의 간격 */
+  width: 35%; /* 유저 정보와 진료 기록 폼의 너비 조정 */
+}
+
+/* 유저 정보 스타일 */
+.user-info {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 15px; /* 패딩 조정 */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* 높이 계산에 패딩 포함 */
+}
+
+/* 유저 정보 텍스트 스타일 */
+.user-info h3 {
+  color: #333;
+  font-size: 1em;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.user-info p {
+  margin: 8px 0;
+  line-height: 1.4;
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* 진료 기록 작성 폼 스타일 */
+.patient-record {
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 15px; /* 패딩 조정 */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* 높이 계산에 패딩 포함 */
+  overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
+}
+
+/* 진료 기록 폼 내부 요소 스타일 */
+.record-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 내부 요소 간 간격 조정 */
+}
+
+.record-form div {
+  margin-bottom: 10px; /* 요소 간의 여백 조정 */
+}
+
+.record-form label {
+  font-weight: bold;
+  margin-bottom: 5px; /* 레이블 하단 여백 조정 */
+  font-size: 0.9em;
+}
+
+.record-form input,
+.record-form textarea {
+  width: 100%;
+  padding: 8px; /* 입력 필드 패딩 조정 */
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.9em;
+  transition: border 0.3s ease;
+}
+
+.record-form input:focus,
+.record-form textarea:focus {
+  border-color: #007bff;
+}
+
+.record-form button {
+  padding: 10px; /* 버튼 패딩 조정 */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+}
+
+.record-form button:hover {
+  background-color: #0056b3;
+}
+
+/* 진료 기록 목록 스타일 */
+.record-list {
+  background-color: #ffffff;
+  padding: 15px; /* 패딩 조정 */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 25%; /* 진료 기록 목록의 너비 조정 */
+  max-height: 100%; /* 전체 높이에 맞추기 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  box-sizing: border-box; /* 높이 계산에 패딩 포함 */
+}
+
+/* 진료 기록 아이템 스타일 */
+.record-item {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px; /* 패딩 조정 */
+  margin-bottom: 10px; /* 여백 조정 */
+  position: relative;
+}
+
+.record-item strong {
+  display: block;
+  margin-bottom: 3px; /* 여백 조정 */
+}
+
+/* 진료 기록 상세 정보 스타일 */
+.record-details {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 35%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
+  max-height: 100%; /* 전체 높이에 맞추기 */
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+  height: 100%; /* 전체 높이 고정 */
+  box-sizing: border-box; /* 높이 계산에 패딩 포함 */
+}
+
+/* 진료 기록 상세 정보 텍스트 스타일 */
+.record-details h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.record-details p {
+  margin: 10px 0;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* 스크롤바 스타일 */
+.record-list::-webkit-scrollbar,
+.record-details::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+}
+
+.record-list::-webkit-scrollbar-thumb,
+.record-details::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* 스크롤바 색상 */
+  border-radius: 5px;
+}
+
+.record-list::-webkit-scrollbar-track,
+.record-details::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
