@@ -1,0 +1,45 @@
+/* devicestatusform 스타일*/
+.device-status-form {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .device-status-form h2 {
+    margin-bottom: 15px;
+  }
+  
+  .device-status-form form div {
+    margin-bottom: 15px;
+  }
+  
+  .device-status-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .device-status-form input,
+  .device-status-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .device-status-form button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .device-status-form button:hover {
+    background-color: #218838;
+  }
+
+

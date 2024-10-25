@@ -1,48 +1,52 @@
 /* 전체 레이아웃을 그리드로 설정 */
 .user-search-app {
   display: grid;
-  grid-template-columns: 150px 1fr; /* 좌측 패널 150px, 나머지 공간 flexible */
+  grid-template-columns: 200px 1fr; /* 좌측 패널 200px, 나머지 공간 flexible */
   height: 100vh; /* 전체 높이 채우기 */
-  font-size: 0.8em; /* 전체 폰트 크기 축소 */
+  font-size: 1em; /* 기본 폰트 크기 설정 */
+  background-color: #f8f9fa;
 }
 
 /* 좌측 패널 레이아웃 */
 .left-panel {
   background-color: #f4f4f4;
-  padding: 10px; /* 패딩 축소 */
+  padding: 15px; /* 패딩 조정 */
   display: flex;
   flex-direction: column;
-  width: 150px; /* 좌측 패널 너비 축소 */
+  width: 200px; /* 좌측 패널 너비 */
   height: 100%; /* 좌측 패널 전체 높이 */
-  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 축소 */
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 설정 */
   border-right: 1px solid #e0e0e0; /* 패널 경계선 */
+  box-sizing: border-box;
+  overflow-y: auto; /* 스크롤 활성화 */
 }
 
-/* 프로필 영역 */
+/* profile과 user-item-header의 겹침 문제 해결 */
 .profile {
-  margin-bottom: 10px; /* 여백 축소 */
-  text-align: center;
+  position: relative; /* profile에 position을 설정 */
+  z-index: 5; /* user-item-header보다 낮은 z-index 설정 */
+  background-color: #f4f4f4; /* profile의 배경색 */
 }
 
 .profile h2 {
   color: #333;
-  font-size: 1em; /* 폰트 크기 축소 */
-  margin-bottom: 5px;
+  font-size: 1.2em; /* 폰트 크기 조정 */
+  margin-bottom: 10px;
 }
 
 .profile img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 검색 바 스타일 */
 .search-bar input {
   width: 100%;
-  padding: 5px; /* 패딩 축소 */
-  margin-bottom: 10px; /* 여백 축소 */
+  padding: 8px; /* 패딩 조정 */
+  margin-bottom: 15px; /* 여백 조정 */
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -51,15 +55,15 @@
 
 /* 유저 리스트 스타일 */
 .user-list {
-  padding: 5px; /* 패딩 축소 */
+  padding: 10px; /* 패딩 조정 */
   overflow-y: auto; /* 유저 리스트 스크롤 가능 */
 }
 
 .user-item {
-  padding: 8px; /* 패딩 축소 */
-  margin-bottom: 8px; /* 여백 축소 */
+  padding: 10px; /* 패딩 조정 */
+  margin-bottom: 10px; /* 여백 조정 */
   background-color: #e6e6e6;
-  border-radius: 4px;
+  border-radius: 5px;
   border: 1px solid #e0e0e0;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -71,15 +75,21 @@
   background-color: #d4d4d4;
 }
 
+/* user-item-header가 profile 아래로 가지 않도록 설정 */
 .user-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  white-space: nowrap; /* 줄바꿈 방지 */
-  overflow: hidden; /* 넘치는 텍스트 숨기기 */
-  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
-  width: 100%;
+  position: relative; /* z-index 설정을 위해 position 추가 */
+  z-index: 10; /* profile보다 높은 z-index 설정 */
+  background-color: #fff; /* 배경색 추가 */
+  padding: 5px; /* 배경을 더 크게 표시하기 위한 패딩 */
+  border-bottom: 1px solid #ccc; /* 구분선 추가 */
 }
+
+/* user-details를 아래로 보내기 위해 z-index 조정 */
+.user-details {
+  position: relative; /* z-index 설정을 위해 position 추가 */
+  z-index: 1; /* 낮은 z-index 설정 */
+}
+
 
 .user-name {
   font-weight: bold;
@@ -91,60 +101,26 @@
 
 .user-birthdate {
   color: #777;
-  margin-left: 5px; /* 이름과 생년월일 간의 간격 축소 */
+  margin-left: 5px; /* 이름과 생년월일 간의 간격 */
   flex-shrink: 0; /* 생년월일이 줄어들지 않도록 고정 */
   white-space: nowrap; /* 줄바꿈 방지 */
 }
 
 .user-item-other {
-  margin-top: 5px; /* 여백 축소 */
-  font-size: 0.8em; /* 폰트 크기 축소 */
+  margin-top: 5px; /* 여백 조정 */
+  font-size: 0.85em; /* 폰트 크기 조정 */
   color: #555;
 }
 
 /* 우측 패널 */
 .right-panel {
   background-color: #fff;
-  padding: 10px; /* 패딩 축소 */
+  padding: 20px; /* 패딩 조정 */
   display: flex;
   flex-direction: column; /* 수직 정렬을 위해 flex-direction을 column으로 설정 */
   height: 100%; /* 전체 높이 고정 */
   box-sizing: border-box; /* 전체 높이 및 너비 계산에 padding 및 border 포함 */
-}
-
-/* 스크롤바 스타일 조정 */
-.right-panel::-webkit-scrollbar {
-  display: none; /* 스크롤바 숨기기 */
-}
-
-/* 유저 정보 및 진료 기록 입력 폼 */
-.user-info-record {
-  flex: 1; /* 남은 공간을 채우도록 확장 */
-  display: flex; /* 내부 요소의 높이 조정을 위한 flex 레이아웃 */
-  flex-direction: column; /* 수직 정렬 */
-  justify-content: space-between; /* 내부 요소의 공간 배분 */
-  height: 30%;
-}
-
-/* 유저 정보 스타일 */
-.user-info {
-  width: 100%;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* 컴포넌트 간의 간격 */
-}
-
-/* 필요한 경우 다른 레이아웃 속성 추가 */
-.user-info-record {
-  display: block; /* 기본 블록 레이아웃으로 설정 */
-}
-
-/* user-info와 patient-record의 수직 정렬 및 간격 */
-.user-info-record > .user-info,
-.user-info-record > .patient-record {
-  margin-bottom: 20px; /* 각 컴포넌트 사이의 간격 */
+  overflow-y: auto; /* 스크롤 활성화 */
 }
 
 /* 유저 정보 및 진료 기록 영역 */
@@ -156,213 +132,125 @@
   height: calc(100% - 40px); /* 전체 높이에서 상단 패딩을 제외한 높이 */
 }
 
+/* 유저 정보 및 진료 기록 입력 폼 */
+.user-info-record {
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  gap: 20px; /* 유저 정보와 진료 기록 입력 폼 간의 간격 */
+  width: 35%; /* 유저 정보와 진료 기록 폼의 너비 조정 */
+}
 
 /* 유저 정보 스타일 */
 .user-info {
-  flex: 1; /* 유저 정보 높이를 전체 공간에 맞추기 */
+  width: 100%;
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 15px; /* 패딩 조정 */
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; /* 컴포넌트 간의 간격 */
-  height: 100%; /* 전체 높이 고정 */
   box-sizing: border-box; /* 높이 계산에 패딩 포함 */
 }
+
+/* 유저 정보 텍스트 스타일 */
 .user-info h3 {
   color: #333;
-  font-size: 1em; /* 폰트 크기 축소 */
+  font-size: 1em;
   margin-bottom: 10px;
   border-bottom: 1px solid #007bff;
   padding-bottom: 5px;
 }
 
 .user-info p {
-  margin: 8px 0; /* 여백 축소 */
+  margin: 8px 0;
   line-height: 1.4;
-  font-size: 0.9em; /* 폰트 크기 축소 */
+  font-size: 0.9em;
   color: #555;
 }
-.patient-record h2 {
-  margin-bottom: 10px; /* 여백 축소 */
-  color: #007bff;
-  font-size: 1em; /* 폰트 크기 축소 */
-}
+
 /* 진료 기록 작성 폼 스타일 */
 .patient-record {
-  flex: 1;
+  width: 100%;
   background-color: #f9f9f9;
-  padding: 15px; /* 패딩 축소 */
+  padding: 15px; /* 패딩 조정 */
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  height: 100%; /* 전체 높이 고정 */
   box-sizing: border-box; /* 높이 계산에 패딩 포함 */
   overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
-  font-size: 0.9em; /* 폰트 크기 축소 */
 }
 
 /* 진료 기록 폼 내부 요소 스타일 */
 .record-form {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* 내부 요소 간 간격 축소 */
+  gap: 8px; /* 내부 요소 간 간격 조정 */
 }
 
 .record-form div {
-  margin-bottom: 8px; /* 요소 간의 여백 축소 */
+  margin-bottom: 10px; /* 요소 간의 여백 조정 */
 }
 
 .record-form label {
   font-weight: bold;
-  margin-bottom: 3px; /* 레이블 하단 여백 축소 */
-  font-size: 0.9em; /* 레이블 폰트 크기 축소 */
+  margin-bottom: 5px; /* 레이블 하단 여백 조정 */
+  font-size: 0.9em;
 }
 
 .record-form input,
 .record-form textarea {
   width: 100%;
-  padding: 8px; /* 입력 필드 패딩 축소 */
-  margin-bottom: 8px;
+  padding: 8px; /* 입력 필드 패딩 조정 */
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-  font-size: 0.9em; /* 입력 필드 폰트 크기 축소 */
+  font-size: 0.9em;
   transition: border 0.3s ease;
 }
 
 .record-form input:focus,
 .record-form textarea:focus {
-  border-color: #007bff; /* 포커스 시 파란색 테두리 */
+  border-color: #007bff;
 }
 
 .record-form button {
-  padding: 8px; /* 버튼 패딩 축소 */
+  padding: 10px; /* 버튼 패딩 조정 */
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 0.9em; /* 버튼 폰트 크기 축소 */
+  font-size: 0.9em;
 }
 
 .record-form button:hover {
   background-color: #0056b3;
 }
 
-/* 템플릿 및 기타 섹션 스타일 */
-.medication-template {
-  background-color: #f0f0f0;
-  padding: 15px; /* 패딩 축소 */
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  margin-top: 15px;
-  font-size: 0.9em; /* 템플릿 폰트 크기 축소 */
-}
-
-/* 템플릿 아이템 스타일 */
-.template-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px; /* 패딩 축소 */
-  background-color: #ffffff;
-  border-radius: 5px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 8px; /* 아이템 간 간격 축소 */
-  font-size: 0.9em; /* 템플릿 아이템 폰트 크기 축소 */
-}
-
-.template-item button {
-  padding: 5px 10px; /* 버튼 패딩 축소 */
-  font-size: 0.8em; /* 버튼 폰트 크기 축소 */
-}
-
-.add-template {
-  padding: 15px; /* 템플릿 추가 섹션 패딩 축소 */
-}
-
-.add-template input {
-  padding: 8px; /* 입력 필드 패딩 축소 */
-  font-size: 0.9em; /* 입력 필드 폰트 크기 축소 */
-}
-
-.add-template button {
-  padding: 8px 10px; /* 버튼 패딩 축소 */
-  font-size: 0.9em; /* 버튼 폰트 크기 축소 */
-}
-
-/* 기타 스타일 조정 */
-.image-preview {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-
 /* 진료 기록 목록 스타일 */
 .record-list {
   background-color: #ffffff;
-  padding: 15px;
+  padding: 15px; /* 패딩 조정 */
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 100%; /* 진료 기록 목록의 너비 설정 */
+  width: 25%; /* 진료 기록 목록의 너비 조정 */
   max-height: 100%; /* 전체 높이에 맞추기 */
   overflow-y: auto; /* 스크롤 활성화 */
-  height: 100%; /* 전체 높이 고정 */
   box-sizing: border-box; /* 높이 계산에 패딩 포함 */
 }
 
-/* 크롬, 사파리, 엣지 */
-.record-list::-webkit-scrollbar {
-  width: 6px; /* 스크롤바 너비 축소 */
-}
-
-.record-list::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 5px;
-}
-
-.record-list li {
-  list-style-type: none; /* li의 불릿 제거 */
-}
-
+/* 진료 기록 아이템 스타일 */
 .record-item {
   background-color: #f8f9fa;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 10px; /* 패딩 축소 */
-  margin-bottom: 8px; /* 여백 축소 */
+  padding: 10px; /* 패딩 조정 */
+  margin-bottom: 10px; /* 여백 조정 */
   position: relative;
 }
 
 .record-item strong {
   display: block;
-  margin-bottom: 3px; /* 여백 축소 */
-}
-
-.record-actions {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  display: flex;
-  gap: 5px;
-}
-
-.record-actions button {
-  padding: 5px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.8em; /* 폰트 크기 축소 */
-  transition: background-color 0.3s ease;
-}
-
-.record-actions button:hover {
-  background-color: #0056b3;
+  margin-bottom: 3px; /* 여백 조정 */
 }
 
 /* 진료 기록 상세 정보 스타일 */
@@ -371,24 +259,40 @@
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  width: 100%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
+  width: 35%; /* 진료 기록 목록과 나란히 표시되도록 너비 조정 */
   max-height: 100%; /* 전체 높이에 맞추기 */
   overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
   height: 100%; /* 전체 높이 고정 */
   box-sizing: border-box; /* 높이 계산에 패딩 포함 */
 }
 
-/* 진료 기록 상세 정보 제목 */
+/* 진료 기록 상세 정보 텍스트 스타일 */
 .record-details h3 {
-  font-size: 1.2em; /* 폰트 크기 축소 */
+  font-size: 1.2em;
   margin-bottom: 10px;
   border-bottom: 1px solid #007bff;
   padding-bottom: 5px;
 }
 
-/* 진료 기록 상세 정보의 각 항목 */
 .record-details p {
   margin: 10px 0;
-  font-size: 0.9em; /* 폰트 크기 축소 */
+  font-size: 0.9em;
   line-height: 1.4;
+}
+
+/* 스크롤바 스타일 */
+.record-list::-webkit-scrollbar,
+.record-details::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 너비 */
+}
+
+.record-list::-webkit-scrollbar-thumb,
+.record-details::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* 스크롤바 색상 */
+  border-radius: 5px;
+}
+
+.record-list::-webkit-scrollbar-track,
+.record-details::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
 }

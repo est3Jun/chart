@@ -1,0 +1,104 @@
+/* 전체 대시보드 레이아웃 */
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr 1fr; /* sidebar 고정, 나머지 비율 */
+  grid-template-rows: auto 0.7fr 1fr; /* 두 번째 행의 높이를 더 줄임 */
+  grid-gap: 10px;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+/* 사이드바 */
+.sidebar {
+  grid-row: 1 / span 3;
+  grid-column: 1 / 2;
+  background-color: #f9fafb;
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* patient-info */
+.patientinfo {
+  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* patientgrid */
+.patientgrid {
+  grid-row: 2 / 3;
+  grid-column: 2 / 4;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 95%; /* 높이를 약간 줄여 하단과 여백 확보 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.patientgrid-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* devicestatusform */
+.devicestatus {
+  grid-row: 3 / 4;
+  grid-column: 2 / 3;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* diet */
+.diet {
+  grid-row: 3 / 4;
+  grid-column: 3 / 4;
+  background-color: #fff;
+  padding: 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 100%; /* 필요에 따라 높이를 조정하여 화면에 맞춤 */
+  overflow-y: auto; /* 스크롤 활성화 */
+}
+
+
+/* Flexbox로 외부 컴포넌트 배치 */
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100vh;
+}
+
+.grid-container {
+  flex: 0 0 80%;
+}
+
+.stats-container {
+  flex: 0 0 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pulse, .weight, .bloodpressure {
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+
+.tab-content {
+  max-height: 100%; /* 부모의 최대 높이를 사용 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  padding: 10px;
+}

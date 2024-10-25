@@ -1,0 +1,48 @@
+.patient-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  .patient-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .patient-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .info-columns {
+    display: flex;
+    gap: 40px; /* 좌우 열 간격 */
+  }
+  
+  .info-column-left,
+  .info-column-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .info-column-left p,
+  .info-column-right p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .info-column-left p {
+    color: #666; /* 좌측 컬럼의 글자 색상 */
+    font-weight: bold;
+  }
+  
+  .info-column-right p {
+    color: #333; /* 우측 컬럼의 글자 색상 */
+  }
+  

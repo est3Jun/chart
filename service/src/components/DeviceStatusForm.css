@@ -1,0 +1,104 @@
+/* 전체 대시보드 레이아웃 */
+.dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr 1fr; /* 첫 번째 열은 sidebar 크기, 나머지는 동일 비율 */
+  grid-template-rows: 60px 1fr 1fr; /* 첫 번째 행 높이를 낮게, 나머지는 동일 비율 */
+  grid-template-areas: 
+    "sidebar patientinfo pulse"
+    "sidebar patientgrid weight"
+    "sidebar devicestatus diet";
+  height: 100vh;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* 사이드바 설정 */
+.sidebar {
+  grid-area: sidebar;
+  background-color: #f9fafb;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* patient-info */
+.patientinfo {
+  grid-area: patientinfo;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 60px; /* 텍스트 높이에 맞게 조정 */
+}
+
+/* patient-grid */
+.patientgrid {
+  grid-area: patientgrid;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 80px); /* 나머지 영역을 채움 */
+}
+
+/* diet */
+.diet {
+  grid-area: diet;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: calc(50% - 40px); /* 반 높이로 설정 */
+
+  overflow-y: auto; /* 스크롤 활성화 */
+  
+}
+
+/* devicestatus */
+.devicestatus {
+  grid-area: devicestatus;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: calc(50% - 40px); /* 반 높이로 설정 */
+  overflow-y: auto;
+}
+
+/* 그리드 밖에 배치된 컴포넌트 */
+.pulse {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 15%;
+  height: 30%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weight {
+  position: absolute;
+  right: 10px;
+  top: 35%;
+  width: 15%;
+  height: 30%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bloodpressure {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  width: 15%;
+  height: 30%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content {
+  height: 100%; /* 탭 내용이 가득 차도록 설정 */
+  max-height: 100%;
+  overflow-y: auto; /* 스크롤 활성화 */
+}

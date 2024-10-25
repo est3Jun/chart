@@ -1,0 +1,106 @@
+/* Login Page Container */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+  }
+  
+  /* Login Box */
+  .login-container {
+    background-color: #fff;
+    padding: 30px 20px; /* 패딩을 20px으로 줄여서 대칭을 맞춤 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 320px; /* 넓이를 320px로 넓혀서 대칭감을 높임 */
+    text-align: center;
+  }
+  
+  .login-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .login-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 폼의 항목들을 중앙 정렬 */
+  }
+  
+  .login-container input {
+    padding: 10px;
+    margin-bottom: 15px; /* 입력 필드 사이의 간격을 늘려 대칭감 확보 */
+    width: 90%; /* 입력 필드 넓이를 넓혀서 중앙 정렬 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* 패딩과 보더를 포함한 박스 크기를 맞춤 */
+  }
+  
+  .login-container button {
+    padding: 12px; /* 버튼 패딩을 약간 늘림 */
+    width: 100%; /* 버튼의 넓이를 100%로 설정하여 대칭 맞춤 */
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+  }
+  
+  .login-container button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+  
+  .login-container button:hover:not(:disabled) {
+    background-color: #555;
+  }
+  
+  .additional-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between; /* 버튼들을 양 끝으로 정렬 */
+  }
+  
+  .additional-buttons button {
+    background-color: transparent;
+    color: #555;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px; /* 버튼에 패딩 추가 */
+  }
+  
+  .additional-buttons button:hover {
+    color: #333;
+  }
+  
+
+  .app-selector {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .app-selector button {
+    background-color: #ddd;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .app-selector button.selected {
+    background-color: #333;
+    color: white;
+  }
+  
+  .app-selector button:hover {
+    background-color: #aaa;
+  }
+  
