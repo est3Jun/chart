@@ -7,6 +7,8 @@ import PatientInfo from '../components/rightpannel/PatientInfo';
 import PatientGrid from '../components/rightpannel/PatientGrid';
 import Tabs from '../components/rightpannel/Tabs'; // 새로 추가한 탭 컴포넌트
 import Diet from '../components/rightpannel/Diet'
+import Chat from '../components/rightpannel/Chat';
+
 import './DashboardPage.css';
 
 const DashboardPage = () => {
@@ -43,7 +45,7 @@ const DashboardPage = () => {
               </div>
   
               <div className="diet">
-                <Diet patientId={selectedPatientId} selectedDate={selectedDate} />
+                <Chat />
               </div>
               
               <div className="devicestatus">

@@ -4,15 +4,13 @@ import { getRequest, postRequest, deleteRequest } from './UrlRequest';
 import axios from 'axios';
 import './Sidebar.css';
 
-const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedPatientInfo }) => {
+const Sidebar = ({ setSelectedPatientId, setSelectedPatientInfo }) => {
   const [userName, setUserName] = useState('');
   const [patients, setPatients] = useState([]);
-  const [assignedPatients, setAssignedPatients] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [searchAssignedOnly, setSearchAssignedOnly] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const application = location.state?.application || 'hearton';
@@ -33,19 +31,49 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
     fetchUserName();
   }, [application]);
 
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      await axios.post(
+        'http://172.30.1.125:8082/api/v1/logout',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('Logged out successfully.');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      navigate('/login');
+    }
+  };
 
-
-  const fetchAssignedPatients = useCallback(async () => {
+  const fetchPatientsList = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('accessToken');
       const data = await getRequest(application, '/doctor/patients', token);
-      const assignedPatientIds = data.patients.map((patient) => patient.id);
-      setAssignedPatients(assignedPatientIds);
-      localStorage.setItem('assignedPatients', JSON.stringify(assignedPatientIds));
+      const patientsWithBookmark = data.patients.map((patient) => ({
+        ...patient,
+        isBookmarked: patient.is_bookmark,
+      }));
+      
+      // 북마크된 환자를 상단에 배치
+      const sortedPatients = [
+        ...patientsWithBookmark.filter((patient) => patient.isBookmarked),
+        ...patientsWithBookmark.filter((patient) => !patient.isBookmarked),
+      ];
+      
+      setPatients(sortedPatients);
     } catch (error) {
-      console.error('Error fetching assigned patients:', error);
-      setError('담당 환자 목록을 불러오는 중 오류가 발생했습니다.');
+      console.error('Error fetching patients:', error);
+      setError('환자 데이터를 불러오는 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -54,7 +82,7 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
   const searchPatients = async () => {
     if (!searchTerm) {
       setIsSearching(false);
-      fetchAssignedPatientsWithDeviceStatus();
+      fetchPatientsList();
       return;
     }
 
@@ -62,11 +90,13 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
       setLoading(true);
       setIsSearching(true);
       const token = localStorage.getItem('accessToken');
-      const searchUrl = searchAssignedOnly
-        ? `/doctor/patients/search?name=${searchTerm}`
-        : `/patients/search?name=${searchTerm}`;
+      const searchUrl = `/doctor/patients/search?name=${searchTerm}`;
       const data = await getRequest(application, searchUrl, token);
-      setPatients(data.patients);
+      const patientsWithBookmark = data.patients.map((patient) => ({
+        ...patient,
+        isBookmarked: patient.is_bookmark,
+      }));
+      setPatients(patientsWithBookmark);
     } catch (error) {
       console.error('Error searching patients:', error);
       setError('검색 결과를 불러오는 중 오류가 발생했습니다.');
@@ -75,98 +105,38 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
     }
   };
 
-  const fetchDeviceStatusId = useCallback(async (patientId) => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const data = await getRequest(application, `/doctor/${patientId}/device-status/recent`, token);
-      return data.device_status_id || null;
-    } catch (error) {
-      console.error('기기 상태가 없습니다:', error);
-      return null;
-    }
-  }, [application]);
-
-  const handlePatientClick = async (patient) => {
+  const handlePatientClick = (patient) => {
     setSelectedPatientId(patient.id);
-    const deviceStatusId = await fetchDeviceStatusId(patient.id);
-    setSelectedDeviceStatusId(deviceStatusId);
     setSelectedPatientInfo(patient);
   };
 
-  const fetchAssignedPatientsWithDeviceStatus = useCallback(async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('accessToken');
-      const data = await getRequest(application, '/doctor/patients', token);
-
-      const patientsWithDeviceStatus = await Promise.all(
-        data.patients
-          .filter((patient) => patient.name !== 'chatbot')
-          .map(async (patient) => {
-            let deviceStatusId = null;
-            if (assignedPatients.includes(patient.id)) {
-              deviceStatusId = await fetchDeviceStatusId(patient.id);
-            }
-            return { ...patient, device_status_id: deviceStatusId };
-          })
-      );
-
-      setPatients(patientsWithDeviceStatus);
-    } catch (error) {
-      console.error('Error fetching assigned patients:', error);
-      setError('환자 데이터를 불러오는 중 오류가 발생했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  }, [assignedPatients, fetchDeviceStatusId, application]);
-
-  const loadAssignedPatientsFromLocalStorage = () => {
-    const storedAssignedPatients = localStorage.getItem('assignedPatients');
-    if (storedAssignedPatients) {
-      setAssignedPatients(JSON.parse(storedAssignedPatients));
-    }
-  };
-
-  const registerPatient = async (patientId) => {
+  const addBookmark = async (patientId) => {
     try {
       const token = localStorage.getItem('accessToken');
       await postRequest(application, `/doctor/${patientId}`, {}, token);
-      alert('담당 환자로 등록되었습니다.');
-      const updatedAssignedPatients = [...assignedPatients, patientId];
-      setAssignedPatients(updatedAssignedPatients);
-      localStorage.setItem('assignedPatients', JSON.stringify(updatedAssignedPatients));
-      fetchAssignedPatientsWithDeviceStatus();
+      alert('북마크로 등록되었습니다.');
+      fetchPatientsList();
     } catch (error) {
-      console.error('Error registering patient:', error);
-      alert('담당 환자로 등록하는 데 실패했습니다. 다시 시도해 주세요.');
+      console.error('Error adding bookmark:', error);
+      alert('북마크 등록에 실패했습니다. 다시 시도해 주세요.');
     }
   };
 
-  const removePatient = async (patientId) => {
+  const removeBookmark = async (patientId) => {
     try {
       const token = localStorage.getItem('accessToken');
       await deleteRequest(application, `/doctor/${patientId}`, token);
-      alert('담당 환자에서 삭제되었습니다.');
-      const updatedAssignedPatients = assignedPatients.filter((id) => id !== patientId);
-      setAssignedPatients(updatedAssignedPatients);
-      localStorage.setItem('assignedPatients', JSON.stringify(updatedAssignedPatients));
-      fetchAssignedPatientsWithDeviceStatus();
+      alert('북마크에서 삭제되었습니다.');
+      fetchPatientsList();
     } catch (error) {
-      console.error('Error removing patient:', error);
-      alert('담당 환자에서 삭제하는 데 실패했습니다.');
+      console.error('Error removing bookmark:', error);
+      alert('북마크에서 삭제하는 데 실패했습니다.');
     }
   };
 
   useEffect(() => {
-    loadAssignedPatientsFromLocalStorage();
-    fetchAssignedPatients();
-  }, [fetchAssignedPatients]);
-
-  useEffect(() => {
-    if (assignedPatients.length > 0) {
-      fetchAssignedPatientsWithDeviceStatus();
-    }
-  }, [assignedPatients, fetchAssignedPatientsWithDeviceStatus]);
+    fetchPatientsList();
+  }, [fetchPatientsList]);
 
   return (
     <div className="null">
@@ -192,12 +162,6 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
         </button>
-        <button
-          onClick={() => setSearchAssignedOnly(!searchAssignedOnly)}
-          className="toggle-search-button"
-        >
-          {searchAssignedOnly ? '전체 환자 검색' : '담당 환자 검색'}
-        </button>
       </div>
 
       <div className="patient-list">
@@ -207,52 +171,49 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
           <p>{error}</p>
         ) : (
           <ul>
-            {(isSearching && patients.length > 0
-              ? patients
-              : patients.filter((patient) => assignedPatients.includes(patient.id))
-            ).map((patient) =>
+            {patients.map((patient) =>
               patient.name !== 'chatbot' && (
-<li key={patient.id} onClick={() => handlePatientClick(patient)}>
-  <div className="patient-info-row compact">
-    <p>
-      <strong>{patient.name}</strong> ({patient.nickname})
-    </p>
-    {assignedPatients.includes(patient.id) ? (
-      <button
-        onClick={(e) => {
-          e.stopPropagation(); // 버튼 클릭 시 환자 선택 방지
-          removePatient(patient.id);
-        }}
-        className="compact-button"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '20px', height: '20px', color: 'red' }}>
-          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-        </svg>
-      </button>
-    ) : (
-      <button
-        onClick={(e) => {
-          e.stopPropagation(); // 버튼 클릭 시 환자 선택 방지
-          registerPatient(patient.id);
-        }}
-        className="compact-button"
-      >
-        담당 환자로 등록
-      </button>
-    )}
-  </div>
-  <div className="patient-info-row compact">
-    <p className="patient-account" style={{ fontSize: '12px', color: '#888' }}>
-      계정: {patient.account}
-    </p>
-    <p>
-      {patient.age}
-      <strong>세</strong>
-    </p>
-  </div>
-</li>
-
-
+                <li key={patient.id} onClick={() => handlePatientClick(patient)}>
+                  <div className="patient-info-row compact">
+                    <p>
+                      <strong>{patient.name}</strong> ({patient.nickname})
+                    </p>
+                    {patient.isBookmarked ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeBookmark(patient.id);
+                        }}
+                        className="compact-button"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style={{ width: '20px', height: '20px', color: 'red' }}>
+                          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+                        </svg>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addBookmark(patient.id);
+                        }}
+                        className="compact-button"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '20px', height: '20px', color: 'black' }}>
+                          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  <div className="patient-info-row compact">
+                    <p className="patient-account" style={{ fontSize: '12px', color: '#888' }}>
+                      계정: {patient.account}
+                    </p>
+                    <p>
+                      {patient.age}
+                      <strong>세</strong>
+                    </p>
+                  </div>
+                </li>
               )
             )}
           </ul>
@@ -263,3 +224,21 @@ const Sidebar = ({ setSelectedPatientId, setSelectedDeviceStatusId, setSelectedP
 };
 
 export default Sidebar;
+
+
+
+
+
+  // 기기 상태 ID를 불러오는 함수. 이 코드는 주석 처리합니다.
+  /*
+  const fetchDeviceStatusId = useCallback(async (patientId) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const data = await getRequest(application, `/doctor/${patientId}/device-status/recent`, token);
+      return data.device_status_id || null;
+    } catch (error) {
+      console.error('기기 상태가 없습니다:', error);
+      return null;
+    }
+  }, [application]);
+  */

@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { getRequest } from '../UrlRequest';
-import {useLocation} from 'react-router-dom'; //상태로 application 수신받고 url 분리용
+import { getRequest, getBaseUrl } from '../UrlRequest';
+import { useLocation } from 'react-router-dom';
 
 const Condition = ({ patientId, selectedDate }) => {
   const [conditionData, setConditionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [surgeryImage, setSurgeryImage] = useState(null);
   const location = useLocation();
-  const application = location.state?.application || 'hearton'; //기본값은 hearton으로 설정
+  const application = location.state?.application || 'hearton';
+
+  const fetchSurgeryImage = async (healthConditionId, token) => {
+    try {
+      const response = await fetch(`${getBaseUrl(application)}/doctor/${healthConditionId}/surgery-image`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          Pragma: 'no-cache',
+        },
+      });
+      if (!response.ok) throw new Error('이미지를 불러오지 못했습니다.');
+      const blob = await response.blob();
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error(`Health Condition ID ${healthConditionId} 이미지 오류:`, error);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchConditionData = async () => {
-      // 상태 초기화
       setConditionData(null);
       setError(null);
       setLoading(true);
+      setSurgeryImage(null);
 
       try {
         const token = localStorage.getItem('accessToken');
@@ -26,7 +45,13 @@ const Condition = ({ patientId, selectedDate }) => {
 
         const data = await getRequest(application, `/doctor/${patientId}/health-condition/daily?on-date=${selectedDate}`, token);
         if (data) {
-          setConditionData(data); // 데이터가 있으면 설정
+          setConditionData(data);
+
+          // health_condition_id가 있는 경우 이미지 가져오기
+          if (data.health_condition_id) {
+            const imageUrl = await fetchSurgeryImage(data.health_condition_id, token);
+            setSurgeryImage(imageUrl);
+          }
         } else {
           setError('해당 날짜에 건강 상태 데이터가 없습니다.');
         }
@@ -64,6 +89,16 @@ const Condition = ({ patientId, selectedDate }) => {
       <p><strong>부종:</strong> {conditionData.edema}</p>
       <p><strong>심부전 클래스:</strong> {conditionData.heart_failure_class}</p>
       <p><strong>약물 복용 상태:</strong> {conditionData.medication_status}</p>
+
+      {/* 이미지 표시 */}
+      {surgeryImage ? (
+        <div>
+          <h4>수술 이미지</h4>
+          <img src={surgeryImage} alt="수술 이미지" style={{ width: '100%', maxWidth: '300px' }} />
+        </div>
+      ) : (
+        <p>이미지를 불러오는 중입니다...</p>
+      )}
     </div>
   ) : (
     <p>{selectedDate}에 대한 건강 상태 데이터가 없습니다.</p>

@@ -38,7 +38,12 @@ const PatientGrid = ({ patientId, setSelectedDate }) => {
         systolic: record.blood_pressure?.systolic || '미등록',
         diastolic: record.blood_pressure?.diastolic || '미등록',
         weight: record.weight || '미등록',
-        heart_rate: record.heart_rate !== null ? record.heart_rate : '미등록',
+        heart_rate: 
+          record.heart_rate !== null && record.heart_rate !== undefined && record.heart_rate !== '' && !isNaN(record.heart_rate) 
+            ? record.heart_rate 
+            : record.health_condition?.heart_rate && !isNaN(record.health_condition.heart_rate)
+            ? record.health_condition.heart_rate
+            : null,
         fainting: record.health_condition?.fainting || '미등록',
         urine_reduction: record.health_condition?.urine_reduction || '미등록',
         discomfort: record.health_condition?.discomfort || '미등록',
@@ -75,7 +80,7 @@ const PatientGrid = ({ patientId, setSelectedDate }) => {
     { headerName: '수축기 혈압', field: 'systolic', flex: 1, minWidth: 100 },
     { headerName: '이완기 혈압', field: 'diastolic', flex: 1, minWidth: 100 },
     { headerName: '체중', field: 'weight', flex: 1, minWidth: 100 },
-    { headerName: '심박수', field: 'heart_rate', flex: 1, minWidth: 100 },
+    { headerName: '심박수', field: 'heart_rate', flex: 1, minWidth: 100, valueFormatter: (params) => params.value ?? '미등록' },
     { headerName: '실신', field: 'fainting', flex: 1, minWidth: 100 },
     { headerName: '소변 감소', field: 'urine_reduction', flex: 1, minWidth: 100 },
     { headerName: '불편감', field: 'discomfort', flex: 1, minWidth: 100 },
@@ -90,7 +95,7 @@ const PatientGrid = ({ patientId, setSelectedDate }) => {
 
   return (
     <div
-      className="patientgrid-content ag-theme-alpine" // 기본 테마 클래스 추가
+      className="patientgrid-content ag-theme-alpine"
       onScroll={handleScroll}
     >
       <AgGridReact
