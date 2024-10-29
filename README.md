@@ -1,11 +1,11 @@
-# HeartOn 의료 관계자용 Page
+# HeartOn Doctor Page
 
 ### 📖 개요
-HeartOn 서비스의 의료 관계자용 Page입니다.
+HeartOn 서비스의 의사 Page입니다.
 <br/><br/>
 
 ### 🚀 프로젝트 목표
-최대한 EMR과 비슷한 레이아웃으로 기존 의료 관계자들에게 사용에 익숙함을 주려고 함.
+최대한 EMR과 비슷한 레이아웃으로 Hearton  사용에 익숙함을 주려고 함.
 <br/><br/><br/>
 
 ### 💻 기술 스택
