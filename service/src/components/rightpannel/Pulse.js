@@ -17,18 +17,34 @@ const Pulse = ({ patientId, selectedDate, selectedPeriod, onPeriodChange }) => {
 
       setLoading(true);
       setError(null);
+      setPulseData(null); // 날짜 변경 시 기존 데이터 초기화
 
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await getRequest(application, `/doctor/${patientId}/pulse/period?on-date=${selectedDate}&period=${selectedPeriod}`, token);
 
-        if (response && response.heart_rates) {
-          setPulseData(response);
+        // 선택한 날짜의 맥박 데이터를 가져옴
+        const dailyResponse = await getRequest(application, `/doctor/${patientId}/pulse/daily?on-date=${selectedDate}`, token);
+
+        // 선택한 기간의 평균 맥박 데이터를 가져옴
+        const periodResponse = await getRequest(application, `/doctor/${patientId}/pulse/period?on-date=${selectedDate}&period=${selectedPeriod}`, token);
+
+        // dailyResponse에서 맥박 데이터 확인
+        if (dailyResponse && dailyResponse.heart_rate !== undefined) {
+          setPulseData({
+            pulse_rate: dailyResponse.heart_rate,
+            avg_heart_rate: periodResponse?.avg_heart_rate || []
+          });
+        } else if (periodResponse && periodResponse.avg_heart_rate?.length > 0) {
+          // 일별 데이터가 없으나 기간 내 평균 맥박 데이터가 있을 경우
+          setPulseData({
+            pulse_rate: `${selectedDate}에 대한 맥박 데이터가 없습니다.`,
+            avg_heart_rate: periodResponse.avg_heart_rate
+          });
         } else {
-          setError('해당 기간에 맥박 데이터가 없습니다.');
+          setError(`${selectedDate}에 대한 맥박 데이터가 없습니다.`);
         }
       } catch (error) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.');
+        setError('');
       } finally {
         setLoading(false);
       }
@@ -42,22 +58,15 @@ const Pulse = ({ patientId, selectedDate, selectedPeriod, onPeriodChange }) => {
   };
 
   if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>{error}</p>;
 
   return (
     <div>
       <h3>맥박</h3>
-      <div className="period-buttons">
-        {[7, 30, 180, 365].map((period) => (
-          <button
-            key={period}
-            className={selectedPeriod === period ? 'selected-period' : ''}
-            onClick={() => handlePeriodChange(period)}
-          >
-            {`${period}일`}
-          </button>
-        ))}
-      </div>
+      {pulseData && typeof pulseData.pulse_rate === 'number' ? (
+        <p>맥박: {pulseData.pulse_rate} bpm</p>
+      ) : (
+        <p>{selectedDate}에 대한 맥박 데이터가 없습니다.</p>
+      )}
       <DataChart
         patientId={patientId}
         dataType="pulse"
@@ -66,6 +75,7 @@ const Pulse = ({ patientId, selectedDate, selectedPeriod, onPeriodChange }) => {
         selectedDate={selectedDate}
         selectedPeriod={selectedPeriod}
       />
+      {error && <p>{error}</p>}
     </div>
   );
 };

@@ -5,8 +5,8 @@ import Weight from '../components/rightpannel/Weight';
 import BloodPressure from '../components/rightpannel/BloodPressure';
 import PatientInfo from '../components/rightpannel/PatientInfo';
 import PatientGrid from '../components/rightpannel/PatientGrid';
-import Tabs from '../components/rightpannel/Tabs'; // 새로 추가한 탭 컴포넌트
-import Diet from '../components/rightpannel/Diet'
+import Tabs from '../components/rightpannel/Tabs';
+import Diet from '../components/rightpannel/Diet';
 import Chat from '../components/rightpannel/Chat';
 
 import './DashboardPage.css';
@@ -16,7 +16,12 @@ const DashboardPage = () => {
   const [selectedPatientInfo, setSelectedPatientInfo] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState(7);
-  const [deviceStatusId, setDeviceStatusId] = useState(null); 
+  const [deviceStatusId, setDeviceStatusId] = useState(null);
+
+  // PatientInfo에서 호출할 함수로, 선택한 기간을 설정합니다.
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+  };
 
   return (
     <div className="dashboard-container">
@@ -29,11 +34,15 @@ const DashboardPage = () => {
               setSelectedDeviceStatusId={setDeviceStatusId}
             />
           </div>
-  
+
           <div className="patientinfo">
-            <PatientInfo patient={selectedPatientInfo} />
+            <PatientInfo 
+              patient={selectedPatientInfo} 
+              onPeriodChange={handlePeriodChange} // 기간 변경 함수 전달
+            />
+            
           </div>
-  
+
           {selectedPatientId && (
             <>
               <div className="patientgrid">
@@ -43,7 +52,7 @@ const DashboardPage = () => {
                   setSelectedPeriod={setSelectedPeriod}
                 />
               </div>
-  
+
               <div className="diet">
                 <Chat />
               </div>
@@ -55,16 +64,16 @@ const DashboardPage = () => {
           )}
         </div>
       </div>
-  
+
       <div className="stats-container">
         <div className="pulse">
           <Pulse patientId={selectedPatientId} selectedDate={selectedDate} selectedPeriod={selectedPeriod} />
         </div>
-  
+
         <div className="weight">
           <Weight patientId={selectedPatientId} selectedDate={selectedDate} selectedPeriod={selectedPeriod} />
         </div>
-  
+
         <div className="bloodpressure">
           <BloodPressure patientId={selectedPatientId} selectedDate={selectedDate} selectedPeriod={selectedPeriod} />
         </div>

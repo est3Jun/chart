@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage'; // 로그인 페이지 컴포넌트
 import DashboardPage from './pages/DashboardPage'; // 대시보드 페이지 컴포넌트
 import DialysisPage from './pages/DialysisPage' ;
+import KakaoCallback from './components/KakaoCallback';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dialysis" element={<DialysisPage />} />
+        <Route path="/kakao-callback" element={<KakaoCallback />} /> {/* 콜백 경로 */}
         <Route path="*" element={<LoginPage />} /> {/* 기본 경로를 로그인 페이지로 설정 */}
       </Routes>
     </Router>

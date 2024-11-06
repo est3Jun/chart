@@ -2,7 +2,6 @@ import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import { format, parseISO } from 'date-fns';
 
-// 스케일 및 플러그인 등록
 ChartJS.register(...registerables);
 
 const Chart = ({ labels, data, data2, label, label2 }) => {

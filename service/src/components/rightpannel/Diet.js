@@ -105,6 +105,10 @@ const Diet = ({ patientId, selectedDate }) => {
               maxWidth: '600px',
               margin: 'auto',
               padding: '20px',
+              zIndex: 1050,
+            },
+            overlay: {
+              zIndex: 1040,
             },
           }}
         >

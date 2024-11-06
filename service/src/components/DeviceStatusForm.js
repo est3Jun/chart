@@ -32,7 +32,9 @@ const DeviceStatusForm = ({ patientId, isListView }) => {
           endDate: endDate,
           diagnosis: item.device_status.diagnosis,
           deviceType: item.device_status.device_type,
-          insertionApproach: item.device_status.insertion_approach
+          insertionApproach: item.device_status.insertion_approach,
+          monitoring_enable: item.device_status.monitoring_enable,
+          mri_enable: item.device_status.mri_enable
         };
       });
       setDeviceStatusList(formattedList);
@@ -65,6 +67,19 @@ const DeviceStatusForm = ({ patientId, isListView }) => {
       surgery_date: status.startDate,
       device_type: status.deviceType,
       insertion_approach: status.insertionApproach,
+      monitoring_enable: status.monitoring_enable,
+      mri_enable: status.mri_enable,
+    });
+  };
+
+  // 수정 폼 닫기
+  const handleCancelEdit = () => {
+    setEditStatusId(null);
+    setFormData({
+      diagnosis: '',
+      surgery_date: '',
+      device_type: '',
+      insertion_approach: '',
       monitoring_enable: '',
       mri_enable: ''
     });
@@ -131,12 +146,11 @@ const DeviceStatusForm = ({ patientId, isListView }) => {
               {deviceStatusList.map((status) => (
                 <div key={status.id} style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
                   <div>
-                    <h4>{status.diagnosis}</h4>
-                    <p>시작일: {status.startDate}</p>
-                    <p>종료일: {status.endDate}</p>
+                    <h4>{status.diagnosis} <button onClick={() => handleEditClick(status)}>수정</button></h4> 
+                    <p>기간: {status.startDate}~{status.endDate}</p>
                     <p>기기 유형: {status.deviceType}</p>
                     <p>삽입 접근 방식: {status.insertionApproach}</p>
-                    <button onClick={() => handleEditClick(status)}>수정</button>
+                    <p>모니터링 유무: {status.monitoring_enable} MRI 유무: {status.mri_enable}</p>
                   </div>
 
                   {editStatusId === status.id && (
@@ -190,8 +204,37 @@ const DeviceStatusForm = ({ patientId, isListView }) => {
                           <option value="피하">피하</option>
                         </select>
                       </div>
+                      <div>
+                        <label>모니터링 가능 여부:</label>
+                        <select
+                          name="monitoring_enable"
+                          value={formData.monitoring_enable}
+                          onChange={handleInputChange}
+                          required
+                        >
+                          <option value="">선택</option>
+                          <option value="유">유</option>
+                          <option value="무">무</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label>MRI 가능 여부:</label>
+                        <select
+                          name="mri_enable"
+                          value={formData.mri_enable}
+                          onChange={handleInputChange}
+                          required
+                        >
+                          <option value="">선택</option>
+                          <option value="유">유</option>
+                          <option value="무">무</option>
+                        </select>
+                      </div>
                       <button type="submit" disabled={loading}>
                         {loading ? '처리 중...' : '기기 상태 수정'}
+                      </button>
+                      <button type="button" onClick={handleCancelEdit}>
+                        취소
                       </button>
                     </form>
                   )}

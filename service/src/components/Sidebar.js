@@ -176,7 +176,7 @@ const Sidebar = ({ setSelectedPatientId, setSelectedPatientInfo }) => {
                 <li key={patient.id} onClick={() => handlePatientClick(patient)}>
                   <div className="patient-info-row compact">
                     <p>
-                      <strong>{patient.name}</strong> ({patient.nickname})
+                      <strong>{patient.name}</strong> ({patient.birth_year})
                     </p>
                     {patient.isBookmarked ? (
                       <button
