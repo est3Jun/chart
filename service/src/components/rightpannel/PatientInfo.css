@@ -1,48 +1,57 @@
-.patient-info-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-  }
-  
-  .patient-details {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .patient-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .info-columns {
-    display: flex;
-    gap: 40px; /* 좌우 열 간격 */
-  }
-  
-  .info-column-left,
-  .info-column-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .info-column-left p,
-  .info-column-right p {
-    font-size: 16px;
-    margin: 5px 0;
-  }
-  
-  .info-column-left p {
-    color: #666; /* 좌측 컬럼의 글자 색상 */
-    font-weight: bold;
-  }
-  
-  .info-column-right p {
-    color: #333; /* 우측 컬럼의 글자 색상 */
-  }
-  
+.patient-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.patient-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  flex: 1;
+}
+
+.patient-details div {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.patient-details strong {
+  margin-right: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.period-buttons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.period-buttons button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.period-buttons button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.selected-period {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}

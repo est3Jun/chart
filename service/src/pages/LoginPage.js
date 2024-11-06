@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'; 
 import { useNavigate } from 'react-router-dom';
-import { loginRequest } from '../components/UrlRequest'; // postRequest 함수 사용
+import { loginRequest } from '../components/UrlRequest'; 
 import SignupModal from '../components/SignupModal'; 
 import axios from 'axios';
+import KakaoLoginButton from '../components/KakaoLoginButton';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -70,21 +71,18 @@ const LoginPage = () => {
       const response = await loginRequest('/api/v1/login', {
         account,
         password,
-        application: 'hearton', // 'hearton'만 사용
+        application: 'hearton',
       });
 
       if (response.accessToken && response.refreshToken) {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
-        console.log('Login Successful:', response);
-  
-        navigate('/dashboard', {state: {application: 'hearton'} });
+        navigate('/dashboard', { state: { application: 'hearton' } });
       } else {
         alert('Login failed. Please check your credentials.');
       }
     } catch (error) {
       alert(`Login failed: ${error.message || 'Please try again.'}`);
-      console.error('Login Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +94,7 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <h2>HeartOn</h2>
+        <h2>HeartOn Management</h2>
         <form>
           <input
             type="text"
@@ -121,8 +119,8 @@ const LoginPage = () => {
         <div className="additional-buttons">
           <button onClick={openSignupModal}>Go to Signup</button>
         </div>
+        <KakaoLoginButton />
       </div>
-
       <SignupModal
         isOpen={isSignupOpen}
         onRequestClose={closeSignupModal}

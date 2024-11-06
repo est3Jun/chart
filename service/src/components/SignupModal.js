@@ -1,50 +1,70 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { postRequest } from './UrlRequest'; // UrlRequest.js에서 가져오기
+import { postRequest, loginRequest } from './UrlRequest'; // loginRequest 추가
 import './Modal.css';
 
 const SignupModal = ({ isOpen, onRequestClose }) => {
-  // 각 필드의 상태 관리
+  const [step, setStep] = useState(1);
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
+  const [birthdate, setBirthdate] = useState('');
   const [phone, setPhone] = useState('');
-  const [language, setLanguage] = useState('ko'); // 기본 언어 설정
   const [code, setCode] = useState('');
-  const [application, setApplication] = useState('hearton'); // 기본값은 hearton으로 설정
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [application] = useState('hearton'); // 기본값 설정
 
-  // 회원가입 핸들러 함수
+  const nextStep = () => setStep((prevStep) => prevStep + 1);
+  const prevStep = () => setStep((prevStep) => prevStep - 1);
+
+  // 문자 인증 코드 전송
+  const sendSmsCode = async () => {
+    try {
+      await loginRequest('/api/v1/sms', { phone, application: 'hearton' });
+      setIsCodeSent(true);
+      alert('인증 코드가 전송되었습니다.');
+    } catch (error) {
+      console.error('SMS 전송 오류:', error);
+      alert('문자 전송에 실패했습니다. 다시 시도해주세요.');
+    }
+  };
+
+  // 문자 인증 코드 확인
+  const verifySmsCode = async () => {
+    try {
+      await loginRequest('/api/v1/sms/verification', { code, phone });
+      alert('인증 성공');
+      handleSignup(); // 인증 성공 시 회원가입 요청 진행
+    } catch (error) {
+      console.error('SMS 인증 오류:', error);
+      alert('인증에 실패했습니다. 올바른 코드를 입력했는지 확인하세요.');
+    }
+  };
+
+  // 회원가입 핸들러
   const handleSignup = async () => {
-    // 비밀번호 일치 확인
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
 
     try {
-      // 선택된 application에 따라 동적으로 URL을 설정
       const url = `/doctor/sign-up`;
-
-      // postRequest 함수 사용, application을 첫 번째 인자로 전달
-      const data = await postRequest(application, url, {
-        account: account,
-        password: password,
-        name: name,
-        nickname: nickname,
-        phone: phone,
-        language: language,
-        code: code,
+      await postRequest(application, url, {
+        account,
+        password,
+        name,
+        nickname,
+        birthdate,
+        phone,
       });
-
-      // 성공 시 처리 로직
-      console.log('Signup Successful:', data);
-      onRequestClose(); // 모달 닫기
+      alert('회원가입에 성공했습니다.');
+      onRequestClose();
     } catch (error) {
-      // 오류 발생 시 처리 로직
-      console.error('Signup Error:', error);
-      alert('Signup failed. Please try again.');
+      console.error('회원가입 오류:', error);
+      alert('회원가입에 실패했습니다.');
     }
   };
 
@@ -55,68 +75,92 @@ const SignupModal = ({ isOpen, onRequestClose }) => {
       ariaHideApp={false}
       contentLabel="Signup Modal"
     >
-      <h2>Signup</h2>
+      <h2>회원가입</h2>
       <form>
-        {/* Application 선택 Dropdown */}
-        <select
-          value={application}
-          onChange={(e) => setApplication(e.target.value)}
-        >
-          <option value="hearton">HeartOn</option>
-          <option value="dialysis">Dialysis</option>
-        </select>
+        {step === 1 && (
+          <>
+            <input
+              type="text"
+              placeholder="Account"
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <button type="button" onClick={nextStep}>다음</button>
+          </>
+        )}
 
-        <input
-          type="text"
-          placeholder="Account"
-          value={account}
-          onChange={(e) => setAccount(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Nickname"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Language"
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-        />
-        <button type="button" onClick={handleSignup}>Signup</button>
+        {step === 2 && (
+          <>
+            <input
+              type="text"
+              placeholder="Nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              required
+            />
+            <input
+              type="date"
+              placeholder="Birthdate"
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <button type="button" onClick={prevStep}>이전</button>
+            <button type="button" onClick={nextStep}>다음</button>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <button type="button" onClick={sendSmsCode} disabled={isCodeSent}>
+              {isCodeSent ? '코드 다시 보내기' : '인증 코드 보내기'}
+            </button>
+            {isCodeSent && (
+              <>
+                <input
+                  type="text"
+                  placeholder="인증 코드 입력"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  required
+                />
+                <button type="button" onClick={verifySmsCode}>인증하기</button>
+              </>
+            )}
+            <button type="button" onClick={prevStep}>이전</button>
+          </>
+        )}
       </form>
-      <button onClick={onRequestClose}>Close</button>
+      <button onClick={onRequestClose}>닫기</button>
     </Modal>
   );
 };

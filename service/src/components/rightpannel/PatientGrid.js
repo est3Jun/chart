@@ -35,8 +35,8 @@ const PatientGrid = ({ patientId, setSelectedDate }) => {
       const healthList = data.health_list || [];
       const formattedData = healthList.map((record) => ({
         on_date: record.on_date,
-        systolic: record.blood_pressure?.systolic || '미등록',
-        diastolic: record.blood_pressure?.diastolic || '미등록',
+        systolic: record.blood_pressure?.systolic || null,
+        diastolic: record.blood_pressure?.diastolic || null,
         weight: record.weight || '미등록',
         heart_rate: 
           record.heart_rate !== null && record.heart_rate !== undefined && record.heart_rate !== '' && !isNaN(record.heart_rate) 
@@ -77,8 +77,8 @@ const PatientGrid = ({ patientId, setSelectedDate }) => {
 
   const columnDefs = [
     { headerName: '날짜', field: 'on_date', sortable: true, filter: true, flex: 1, minWidth: 100 },
-    { headerName: '수축기 혈압', field: 'systolic', flex: 1, minWidth: 100 },
-    { headerName: '이완기 혈압', field: 'diastolic', flex: 1, minWidth: 100 },
+    { headerName: '수축기 혈압', field: 'systolic', flex: 1, minWidth: 100, valueFormatter: (params) => params.value ?? '미등록' },
+    { headerName: '이완기 혈압', field: 'diastolic', flex: 1, minWidth: 100, valueFormatter: (params) => params.value ?? '미등록' },
     { headerName: '체중', field: 'weight', flex: 1, minWidth: 100 },
     { headerName: '심박수', field: 'heart_rate', flex: 1, minWidth: 100, valueFormatter: (params) => params.value ?? '미등록' },
     { headerName: '실신', field: 'fainting', flex: 1, minWidth: 100 },
